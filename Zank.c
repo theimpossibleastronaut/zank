@@ -39,7 +39,7 @@ const char BODY[] = "politician";
 #define ACTION soil
 
 #define CR printf("\n");
-#define OFF_MAP printf("You were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2;
+#define OFF_MAP printf("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2;
 #define PROMPT CR printf("(%d,%d) (politicians left to retire: %d) (HP: %d) (i,p,q[uit]) (e,w,n,s)? ", x, y, politicians - indicted, health);
 
 
@@ -50,6 +50,8 @@ void showpoliticians(int foundpolitician);
 void tree(void);
 void wall(void);
 void lake(void);
+
+void showMap(void);
 
 int x,y;
 int map[X][Y];
@@ -173,8 +175,8 @@ int main(int argc, char **argv)
 
 	short West = -1;
 	short East = 1;
-	short North = -1;
-	short South = 1;
+	short North = 1;
+	short South = -1;
 
 	int politicians = 0, indicted = 0;
 	int foundpolitician = 0;
@@ -211,8 +213,8 @@ int main(int argc, char **argv)
 		switch (c)
 		{
 			case 'e':
-			if ( x < X - 1)
-				x = x + East;
+			if ( y < Y - 1)
+				y = y + East;
 			else {
 				OFF_MAP
 				flag = 1;
@@ -220,8 +222,8 @@ int main(int argc, char **argv)
 			break;
 
 			case 'w':
-			if ( x > 0)
-				x = x + West;
+			if ( y > 0)
+				y = y + West;
 			else {
 				OFF_MAP
 				flag = 1;
@@ -229,8 +231,8 @@ int main(int argc, char **argv)
 			break;
 
 			case 's':
-			if (y < Y - 1)
-				y = y + South;
+			if (x > 0)
+				x = x + South;
 			else {
 				OFF_MAP
 				flag = 1;
@@ -238,8 +240,8 @@ int main(int argc, char **argv)
 			break;
 
 			case 'n':
-			if ( y > 0)
-				y = y + North;
+			if ( x < X - 1 )
+				x = x + North;
 			else {
 				OFF_MAP
 				flag = 1;
@@ -260,6 +262,11 @@ int main(int argc, char **argv)
 			showpoliticians(foundpolitician);
 			case '\n':
 			PROMPT
+			flag = 1;
+			break;
+
+			case 'm':
+			showMap();
 			flag = 1;
 			break;
 
@@ -544,3 +551,23 @@ void lake(void) {
 	printf("\\__________________/\n");
 }
 
+void showMap(void)
+{
+	int i,j;
+
+	for (i=0; i<X; i++)
+	{
+		printf("\n");
+		for (j=0; j<Y; j++)
+		{
+			/* printf("%d", map[i][j]); */
+			printf("(%d),(%d)", i, j);
+			if (i ==x && j ==y)
+				printf("@");
+			else
+				printf("|");
+		}
+
+
+	}
+}
