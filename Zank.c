@@ -32,7 +32,7 @@
 #define Y 10
 
 /* #define VER "2016.07.24-01alpha" */
-#define VER "git"
+#define VER "unstable"
 #define AUTHOR "Andy Alt, and inspired by games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix"
 
 const char BODY[] = "politician";
@@ -40,7 +40,7 @@ const char BODY[] = "politician";
 
 #define CR printf("\n");
 #define OFF_MAP printf("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2;
-#define PROMPT CR printf("(%d,%d) (politicians left to retire: %d) (HP: %d) (i,p,q[uit]) (e,w,n,s)? ", x, y, politicians - indicted, health);
+#define PROMPT CR printf("(%d,%d) (politicians left to retire: %d) (HP: %d) (i,q[uit]) (e,w,n,s)? ", y, x, politicians - indicted, health);
 
 
 bool accuse(int *actions, int climate);
@@ -51,7 +51,9 @@ void tree(void);
 void wall(void);
 void lake(void);
 
+
 void showMap(void);
+
 
 int x,y;
 int map[X][Y];
@@ -60,6 +62,7 @@ int documents = 0;
 int rings = 0;
 int swords = 0;
 int seeds = 0;
+
 
 
 int health = 100;
@@ -79,6 +82,8 @@ enum {
 	Seed,
 	Grapevine
 	};
+
+bool visited[X][Y];
 
 /* Each time a politician is found, his location will be stored */
 /* This variable name should be changed */
@@ -214,7 +219,10 @@ int main(int argc, char **argv)
 		{
 			case 'e':
 			if ( y < Y - 1)
+			{
 				y = y + East;
+				visited[x][y] = 1;
+			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -223,7 +231,10 @@ int main(int argc, char **argv)
 
 			case 'w':
 			if ( y > 0)
+			{
 				y = y + West;
+				visited[x][y] = 1;
+			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -232,7 +243,10 @@ int main(int argc, char **argv)
 
 			case 's':
 			if (x > 0)
+			{
 				x = x + South;
+				visited[x][y] = 1;
+			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -241,7 +255,10 @@ int main(int argc, char **argv)
 
 			case 'n':
 			if ( x < X - 1 )
+			{
 				x = x + North;
+				visited[x][y] = 1;
+			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -258,8 +275,6 @@ int main(int argc, char **argv)
 			flag = 1;
 			break;
 
-			case 'p':
-			showpoliticians(foundpolitician);
 			case '\n':
 			PROMPT
 			flag = 1;
@@ -421,7 +436,6 @@ int main(int argc, char **argv)
 				break;
 			}
 		}
-
 	}
 
 
@@ -555,19 +569,32 @@ void showMap(void)
 {
 	int i,j;
 
-	for (i=0; i<X; i++)
+	for (i= X - 1; i >= 0; i--)
 	{
 		printf("\n");
 		for (j=0; j<Y; j++)
 		{
 			/* printf("%d", map[i][j]); */
-			printf("(%d),(%d)", i, j);
+			/* printf("(%d),(%d)", i, j); */
+			if (visited[i][j] == 1 && map[i][j] == politician)
+				printf("p");
+			else
+			if (visited[i][j] == 1 && map[i][j] == Wall)
+				printf("W");
+			else
+			if (visited[i][j] == 1 && map[i][j] == Lake)
+				printf("L");
+			else
+			if (visited[i][j] == 1 && map[i][j] == Grapevine)
+				printf("G");
+			else
 			if (i ==x && j ==y)
 				printf("@");
+
 			else
 				printf("|");
 		}
-
-
 	}
+
+	printf("\n");
 }
