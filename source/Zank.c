@@ -5,7 +5,7 @@
 //
 //      This program is free software; you can redistribute it and/or modify
 //      it under the terms of the GNU General Public License as published by
-//      the Free Software Foundation; either version 2 of the License, or
+//      the Free Software Foundation; either version 3 of the License, or
 //      (at your option) any later version.
 //
 //      This program is distributed in the hope that it will be useful,
@@ -19,15 +19,16 @@
 //      MA 02110-1301, USA.
 */
 
-
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
+/**
+ *  Define the grid size
+ */
 
-/* Define the grid size */
 #define X 10
 #define Y 10
 
@@ -35,17 +36,14 @@
 #define VER "unstable"
 #define AUTHOR "Andy Alt, and inspired by games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix"
 
-const char BODY[] = "politician";
-#define ACTION soil
-
 #define CR printf("\n");
 #define OFF_MAP printf("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2;
-#define PROMPT CR printf("(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ", y, x, politicians - indicted, health);
+#define PROMPT CR printf("(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ", y, x, politicianCtr - indictedCtr, health);
 
 
 bool accuse(int *actions, int climate);
 void showitems(void);
-void showpoliticians(int foundpolitician);
+/* void showpoliticians(int foundpolitician); */
 
 void tree(void);
 void wall(void);
@@ -77,30 +75,23 @@ enum {
 	Sword,
 	Magic_Ring,
 	indicted_politician,
-	Magic_Waterfall,
+	MagicWaterfall,
 	Dried_up_Waterfall,
 	Seed,
 	Grapevine
 	};
 
-bool visited[X][Y];
+bool g_Visited[X][Y];
 
 /* Each time a politician is found, his location will be stored */
 /* This variable name should be changed */
-int locations[X * Y][2];
+/* int locations[X * Y][2]; */
 
-unsigned int locOfRetiredPoliticians[X][Y];
-int retiredPoliticians = 0;
+/* unsigned int locOfRetiredPoliticians[X][Y];
+int retiredPoliticians = 0; */
 
 int main(int argc, char **argv)
 {
-	printf("\nZank version %s\n", VER);
-	printf("By %s\n", AUTHOR);
-	typedef unsigned char Loop;
-	Loop i,j;
-
-	int c;
-
 	int climate;
 	char *habitat[] = {
 		"a Tree",
@@ -125,7 +116,7 @@ int main(int argc, char **argv)
 		"a religious fanatic",
 		"an imaginary enemy", /* 5 */
 		"Emperor Killewe",
-		"those meddling kids from Scooby Doo",
+		"meddling kids in a van",
 		"everyone you ever wronged",
 		"your worst nightmare",
 		"a copyrighted creature called \"Gollum\"", /* 10 */
@@ -155,74 +146,82 @@ int main(int argc, char **argv)
 		"a sense of strangeness",
 		"a flying six-volt lantern battery", /* 35 */
 		"tax collectors"
-
 	};
 
 	const int CREATURE_COUNT = 36;
 	int creature;
 
-
-	/* strcpy(habitat[4],BODY); */
 	int actions[] = { 0, 0, 0, 69, 1, 10, 10, 10 };
 
 	char *item;
 
-	int t;
 	bool deed;
 
 	bool flag = 0;
 
+	srand( time( 0 ) );
+
+/**
+ * Generate coordinates for Magic Waterfall
+ */
 	int rx, ry;
 	rx = rand() % X;
 	ry = rand() % Y;
 
-	srand( time( 0 ) );
+/**
+ * Initialize map
+ */
+	unsigned short column,row;
+	int politicianCtr = 0;
+
+	for (column = 0; column < X; column++)
+	{
+		for (row = 0; row < Y; row++)
+		{
+			if (rx != column || ry != row)
+			{
+				climate = rand() % 8;
+
+				if (climate == politician)
+					politicianCtr++;
+
+				map[column][row] = climate;
+			}
+			else map[column][row] = MagicWaterfall;
+		}
+	}
+
+
+/**
+ * Starting position
+ */
+	x = X / 2;
+	y = Y / 2;
 
 	short West = -1;
 	short East = 1;
 	short North = 1;
 	short South = -1;
 
-	int politicians = 0, indicted = 0;
-	int foundpolitician = 0;
+	int indictedCtr = 0;
 
+	short c;
 
-	for (i = 0; i < X; i++)
-	{
-		for (j = 0; j < Y; j++)
-		{
-			if (rx != i || ry != j)
-			{
-				climate = rand() % 8;
-
-				if (climate == 3)
-					politicians++;
-
-				map[i][j] = climate;
-			}
-			else map[i][j] = 9;
-
-		}
-	}
-
-
-	x = X / 2;
-	y = Y / 2;
+	printf("\nZank version %s\n", VER);
+	printf("By %s\n", AUTHOR);
 
 	PROMPT
-	while ( ( c = getchar() ) != EOF && health > 0 && politicians != indicted && c != 'q')
+
+	while ( ( c = getchar() ) != EOF && health > 0 && politicianCtr != indictedCtr && c != 'q')
 	{
-		t = rand() % 2;
+		int t = rand() % 2;
 		flag = 0;
 
 		switch (c)
 		{
 			case 'e':
 			if ( y < Y - 1)
-			{
 				y = y + East;
-				visited[x][y] = 1;
-			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -231,10 +230,7 @@ int main(int argc, char **argv)
 
 			case 'w':
 			if ( y > 0)
-			{
 				y = y + West;
-				visited[x][y] = 1;
-			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -243,10 +239,7 @@ int main(int argc, char **argv)
 
 			case 's':
 			if (x > 0)
-			{
 				x = x + South;
-				visited[x][y] = 1;
-			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -255,10 +248,7 @@ int main(int argc, char **argv)
 
 			case 'n':
 			if ( x < X - 1 )
-			{
 				x = x + North;
-				visited[x][y] = 1;
-			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -291,13 +281,23 @@ int main(int argc, char **argv)
 			break;
 		}
 
-		if (! flag)
+
+		if (!flag)
 		{
+			g_Visited[x][y] = 1;
+
 			climate = map[x][y];
 			item = strdup(habitat[climate]);
 			CR
 
 			printf("You see %s\n", item);
+
+/**
+ * This needs to be reworked
+ * actions[5],[6],or[7] will == 10, that would be the 6,7,8th item in the enum list
+ * 10 is just an arbitrary value defined in actions[] to determine whether or not
+ * an items can be acquired
+ */
 
 			if (actions[climate] == 10)
 			{
@@ -316,10 +316,12 @@ int main(int argc, char **argv)
 
 			switch (climate)
 			{
+				int randgrape = rand() % 4;
+
 				case politician:
-				locations[foundpolitician][0] = x;
+				/* locations[foundpolitician][0] = x;
 				locations[foundpolitician][1] = y;
-				foundpolitician++;
+				foundpolitician++; */
 
 				if (documents)
 				{
@@ -327,30 +329,31 @@ int main(int argc, char **argv)
 					if (deed)
 					{
 						documents--;
-						indicted++;
+						indictedCtr++;
 					}
 				}
-				else if (rings) {
+				else if (rings)
+				{
 					deed = accuse(actions, climate);
-					if (deed) {
+					if (deed)
+					{
 						rings--;
-						indicted++;
+						indictedCtr++;
 					}
 				}
 				else if (! documents && ! rings)
 					printf("If you had some incriminating documents or magic rings,\nyou'd be able to indict him.\n");
-				else
-					printf("After you attempt to seduce her, the politician will not have sex with you.\n");
 				break;
-
 
 				case Wall:
 				wall();
-				if (t == 1 && rings) {
+				if (t == 1 && rings)
+				{
 					printf("You ran into a wall and ruined a Magic Ring.\n");
 					rings--;
 				}
-				else if (! t && ! rings) {
+				else if (! t && ! rings)
+				{
 					printf("You ran into wall. (-1 hp)\n");
 					health--;
 				}
@@ -358,21 +361,24 @@ int main(int argc, char **argv)
 
 				case Lake:
 				lake();
-				if (t == 1 && documents) {
+				if (t == 1 && documents)
+				{
 					printf("You fell into the lake and lost an incriminating document.\n");
 					documents--;
 				}
-				else if (t == 0) {
+				else if (t == 0)
+				{
 					printf("You fell into the lake and caught a cold. (-1 hp)\n");
 					health--;
 				}
-				else if (t == 1) {
+				else if (t == 1)
+				{
 					printf("You take a swim, get cleaned up, and feel refreshed. (+2 hp)\n\n");
 					health = health + 2;
 				}
 				break;
 
-				case Magic_Waterfall:
+				case MagicWaterfall:
 				printf("You swim at the base of the Magic Waterfall and feel much better. (+40 hp)\n");
 				health = health + 40;
 				map[x][y] = 10;
@@ -380,17 +386,21 @@ int main(int argc, char **argv)
 
 				case Clearing:
 				creature = rand() % CREATURE_COUNT;
-				if (seeds) {
+				if (seeds)
+				{
 					printf("You plant a seed. You feel better. (+1 hp)\n");
 					seeds--;
 					map[x][y] = Grapevine;
 				}
-				if ( t == 1 && ! swords) {
+
+				if ( t == 1 && ! swords)
+				{
 					printf("You had no cover in the clearing and have been attacked by\n");
 					printf("%s. (-5 hp)\n\n", CREATURES[creature]);
 					health = health - 5;
 				}
-				else if (t == 1 && swords) {
+				else if (t == 1 && swords)
+				{
 					printf("You had no cover in the clearing and have been attacked by\n");
 					printf("%s. Fortunately your sword\n", CREATURES[creature]);
 					printf("protected you. That sword is now broken and you discard it.\n\n");
@@ -406,11 +416,13 @@ int main(int argc, char **argv)
 
 				case Tree:
 				tree();
-				if (t == 1) {
+				if (t == 1)
+				{
 					printf("You rest under the tree and feel better (+1 hp)\n");
 					health++;
 				}
-				else if ( ! t ) {
+				else if ( ! t )
+				{
 					printf("A squirrel runs out of the tree, bites your ankle,\nand quickly disappears. (-1 hp)\n");
 					health--;
 				}
@@ -422,14 +434,14 @@ int main(int argc, char **argv)
 				map[x][y] = Clearing;
 				break;
 
-				case Grapevine: { int randgrape = rand() % 4;
-				if (randgrape != 2) {
+				case Grapevine:
+				if (randgrape != 2)
 					printf("You eat a grape and feel better. (+1 hp)\n");
-				}
-				else {
+				else
+				{
 					printf("The grapes have been poisoned and gave you a bad day. (-10 hp)\n");
 					health -= 10;
-				} }
+				}
 				break;
 
 				default:
@@ -441,7 +453,7 @@ int main(int argc, char **argv)
 
 
 	CR
-	printf("Out of %d politicians, you have retired %d of them.\n", politicians, indicted);
+	printf("Out of %d politicians, you have retired %d of them.\n", politicianCtr, indictedCtr);
 	printf("Your health is %d\n\n", health);
 
 	showitems();
@@ -459,13 +471,13 @@ int main(int argc, char **argv)
 
 bool accuse(int *actions, int climate)
 {
-	if (map[x][y] != 8)
+	if (map[x][y] != indicted_politician)
 	{
 		printf("You've just indicted the politician!\n");
-		retiredPoliticians++;
+		/* retiredPoliticians++;
 
 		locOfRetiredPoliticians[retiredPoliticians - 1][0] = x;
-		locOfRetiredPoliticians[retiredPoliticians - 1][1] = y;
+		locOfRetiredPoliticians[retiredPoliticians - 1][1] = y; */
 
 		int t = rand() % 2;
 
@@ -508,7 +520,7 @@ void showitems(void) {
 
 }
 
-void showpoliticians(int foundpolitician) {
+/* void showpoliticians(int foundpolitician) {
 
 	int i;
 	printf("\nLocations of politicians:\n");
@@ -520,7 +532,7 @@ void showpoliticians(int foundpolitician) {
 	printf("--- Retired ---\n");
 	for (i = 0; i < retiredPoliticians; i++)
 		printf("%3d %3d\n", locOfRetiredPoliticians[i][0], locOfRetiredPoliticians[i][1]);
-}
+} */
 
 void tree(void) {
 	printf("  \e[32;40moOOOOo\e[0m\n");
@@ -554,15 +566,17 @@ void wall(void) {
 	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
 	printf("\e[31;47mHEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\e[0m\n");
 	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
+	printf("\n");
 }
 
 void lake(void) {
 	printf("  \e[37;46m__________\e[0m\n");
-	printf(" /..........\\\n");
-	printf(" \\...........\\____\n");
-	printf(" /................\\\n");
-	printf("/ .................\\\n");
-	printf("\\__________________/\n");
+	printf(" \e[37;46m/..........\\\e[0m\n");
+	printf(" \e[37;46m\\...........\\____\e[0m\n");
+	printf(" \e[37;46m/................\\\e[0m\n");
+	printf("\e[37;46m/ .................\\\e[0m\n");
+	printf("\e[37;46m\\__________________/\e[0m\n");
+	printf("\n");
 }
 
 void showMap(void)
@@ -576,16 +590,16 @@ void showMap(void)
 		{
 			/* printf("%d", map[i][j]); */
 			/* printf("(%d),(%d)", i, j); */
-			if (visited[i][j] == 1 && map[i][j] == politician)
+			if (g_Visited[i][j] == 1 && map[i][j] == politician)
 				printf("p");
 			else
-			if (visited[i][j] == 1 && map[i][j] == Wall)
+			if (g_Visited[i][j] == 1 && map[i][j] == Wall)
 				printf("W");
 			else
-			if (visited[i][j] == 1 && map[i][j] == Lake)
+			if (g_Visited[i][j] == 1 && map[i][j] == Lake)
 				printf("L");
 			else
-			if (visited[i][j] == 1 && map[i][j] == Grapevine)
+			if (g_Visited[i][j] == 1 && map[i][j] == Grapevine)
 				printf("G");
 			else
 			if (i ==x && j ==y)
