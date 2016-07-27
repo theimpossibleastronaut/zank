@@ -1,3 +1,11 @@
+2016-07-26
+
+Added function to show the map. Displays where politicians are that are in need of retirement, Walls, Lakes,
+and Grapevines
+
+Game will not exit now unless the 'x' key is entered
+
+
 2016-07-24
 
 Changed default grid size from 5x5 to 10x10

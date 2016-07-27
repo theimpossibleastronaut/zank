@@ -40,7 +40,7 @@ const char BODY[] = "politician";
 
 #define CR printf("\n");
 #define OFF_MAP printf("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2;
-#define PROMPT CR printf("(%d,%d) (politicians left to retire: %d) (HP: %d) (i,q[uit]) (e,w,n,s)? ", y, x, politicians - indicted, health);
+#define PROMPT CR printf("(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ", y, x, politicians - indicted, health);
 
 
 bool accuse(int *actions, int climate);
@@ -592,7 +592,7 @@ void showMap(void)
 				printf("@");
 
 			else
-				printf("|");
+				printf("*");
 		}
 	}
 
