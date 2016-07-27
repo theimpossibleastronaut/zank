@@ -4,7 +4,9 @@ Text (console/cli) game. Can you find enough magic rings and incriminating docum
 To build: gcc -Wall Zank.c -o Zank
 
 i = show inventory
+
 m = display map
+
 q = quit
 
 e,w,n,s = direction keys
