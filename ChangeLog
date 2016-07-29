@@ -1,3 +1,15 @@
+2016-07-29
+
+Split the code into different files
+
+Add cmake and make files (Won't work on Windows yet)
+
+
+2016-07-28
+
+Support for ncurses added
+
+
 2016-07-26
 
 Added function to show the map. Displays where politicians are that are in need of retirement, Walls, Lakes,
