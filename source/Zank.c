@@ -24,22 +24,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ncurses.h>
 
+#define DEBUG 0
 /**
  *  Define the grid size
  */
 
-#define X 10
-#define Y 10
+#define X 7
+#define Y 7
 
 /* #define VER "2016.07.24-01alpha" */
 #define VER "unstable"
 #define AUTHOR "Andy Alt, and inspired by games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix"
 
-#define CR printf("\n");
-#define OFF_MAP printf("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2;
-#define PROMPT CR printf("(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ", y, x, politicianCtr - indictedCtr, health);
-
+#define OFF_MAP printw("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2;
 
 bool accuse(int *actions, int climate);
 void showitems(void);
@@ -50,8 +49,8 @@ void wall(void);
 void lake(void);
 
 
-void showMap(void);
-
+void showMap(bool Visited[X][Y]);
+void prompt(short pCtr, short iCtr);
 
 int x,y;
 int map[X][Y];
@@ -80,15 +79,6 @@ enum {
 	Seed,
 	Grapevine
 	};
-
-bool g_Visited[X][Y];
-
-/* Each time a politician is found, his location will be stored */
-/* This variable name should be changed */
-/* int locations[X * Y][2]; */
-
-/* unsigned int locOfRetiredPoliticians[X][Y];
-int retiredPoliticians = 0; */
 
 int main(int argc, char **argv)
 {
@@ -207,21 +197,37 @@ int main(int argc, char **argv)
 
 	short c;
 
-	printf("\nZank version %s\n", VER);
-	printf("By %s\n", AUTHOR);
+	initscr();
 
-	PROMPT
+	printw("\nZank version %s\n", VER);
+	printw("By %s\n", AUTHOR);
+	printw("Special thanks to mzdelong\n");
+	refresh();
 
-	while ( ( c = getchar() ) != EOF && health > 0 && politicianCtr != indictedCtr && c != 'q')
+	prompt(politicianCtr, indictedCtr);
+	refresh();
+
+	bool Visited[X][Y];
+	/**
+	 * Init Array
+	 */
+	 for (column=0; column<X; column++)
+		for (row=0; row<Y; row++)
+			Visited[column][row]=0;
+
+	while ( ( c = getch() ) != EOF && health > 0 && politicianCtr != indictedCtr && c != 'q')
 	{
 		int t = rand() % 2;
 		flag = 0;
-
+		clear();
 		switch (c)
 		{
 			case 'e':
 			if ( y < Y - 1)
+			{
 				y = y + East;
+				printw("East\n");
+			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -230,7 +236,10 @@ int main(int argc, char **argv)
 
 			case 'w':
 			if ( y > 0)
+			{
 				y = y + West;
+				printw("West\n");
+			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -239,7 +248,10 @@ int main(int argc, char **argv)
 
 			case 's':
 			if (x > 0)
+			{
 				x = x + South;
+				printw("South\n");
+			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -248,7 +260,10 @@ int main(int argc, char **argv)
 
 			case 'n':
 			if ( x < X - 1 )
+			{
 				x = x + North;
+				printw("North\n");
+			}
 			else {
 				OFF_MAP
 				flag = 1;
@@ -261,36 +276,35 @@ int main(int argc, char **argv)
 			break;
 
 			case 'h':
-			printf("HP: %d\n\n",health);
+			printw("HP: %d\n\n",health);
 			flag = 1;
 			break;
 
 			case '\n':
-			PROMPT
+			prompt(politicianCtr, indictedCtr);
 			flag = 1;
 			break;
 
 			case 'm':
-			showMap();
+			showMap(Visited);
 			flag = 1;
 			break;
 
 			default:
-			printf("That is not a valid direction\n");
+			printw("That is not a valid direction\n");
+			refresh();
 			flag = 1;
 			break;
 		}
 
-
 		if (!flag)
 		{
-			g_Visited[x][y] = 1;
+			Visited[x][y] = 1;
 
 			climate = map[x][y];
 			item = strdup(habitat[climate]);
-			CR
 
-			printf("You see %s\n", item);
+			printw("\nYou see %s\n", item);
 
 /**
  * This needs to be reworked
@@ -301,7 +315,7 @@ int main(int argc, char **argv)
 
 			if (actions[climate] == 10)
 			{
-				printf("Acquiring %s\n", item);
+				printw("Acquiring %s\n", item);
 
 				if (strcmp(item,"an incriminating document") == 0 )
 					documents++;
@@ -312,7 +326,8 @@ int main(int argc, char **argv)
 				map[x][y] = Seed;
 			}
 
-			CR
+			printw("\n");
+
 
 			switch (climate)
 			{
@@ -342,19 +357,19 @@ int main(int argc, char **argv)
 					}
 				}
 				else if (! documents && ! rings)
-					printf("If you had some incriminating documents or magic rings,\nyou'd be able to indict him.\n");
+					printw("If you had some incriminating documents or magic rings,\nyou'd be able to indict him.\n");
 				break;
 
 				case Wall:
 				wall();
 				if (t == 1 && rings)
 				{
-					printf("You ran into a wall and ruined a Magic Ring.\n");
+					printw("You ran into a wall and ruined a Magic Ring.\n");
 					rings--;
 				}
 				else if (! t && ! rings)
 				{
-					printf("You ran into wall. (-1 hp)\n");
+					printw("You ran into wall. (-1 hp)\n");
 					health--;
 				}
 				break;
@@ -363,23 +378,23 @@ int main(int argc, char **argv)
 				lake();
 				if (t == 1 && documents)
 				{
-					printf("You fell into the lake and lost an incriminating document.\n");
+					printw("You fell into the lake and lost an incriminating document.\n");
 					documents--;
 				}
 				else if (t == 0)
 				{
-					printf("You fell into the lake and caught a cold. (-1 hp)\n");
+					printw("You fell into the lake and caught a cold. (-1 hp)\n");
 					health--;
 				}
 				else if (t == 1)
 				{
-					printf("You take a swim, get cleaned up, and feel refreshed. (+2 hp)\n\n");
+					printw("You take a swim, get cleaned up, and feel refreshed. (+2 hp)\n\n");
 					health = health + 2;
 				}
 				break;
 
 				case MagicWaterfall:
-				printf("You swim at the base of the Magic Waterfall and feel much better. (+40 hp)\n");
+				printw("You swim at the base of the Magic Waterfall and feel much better. (+40 hp)\n");
 				health = health + 40;
 				map[x][y] = 10;
 				break;
@@ -388,28 +403,28 @@ int main(int argc, char **argv)
 				creature = rand() % CREATURE_COUNT;
 				if (seeds)
 				{
-					printf("You plant a seed. You feel better. (+1 hp)\n");
+					printw("You plant a seed. You feel better. (+1 hp)\n");
 					seeds--;
 					map[x][y] = Grapevine;
 				}
 
 				if ( t == 1 && ! swords)
 				{
-					printf("You had no cover in the clearing and have been attacked by\n");
-					printf("%s. (-5 hp)\n\n", CREATURES[creature]);
+					printw("You had no cover in the clearing and have been attacked by\n");
+					printw("%s. (-5 hp)\n\n", CREATURES[creature]);
 					health = health - 5;
 				}
 				else if (t == 1 && swords)
 				{
-					printf("You had no cover in the clearing and have been attacked by\n");
-					printf("%s. Fortunately your sword\n", CREATURES[creature]);
-					printf("protected you. That sword is now broken and you discard it.\n\n");
+					printw("You had no cover in the clearing and have been attacked by\n");
+					printw("%s. Fortunately your sword\n", CREATURES[creature]);
+					printw("protected you. That sword is now broken and you discard it.\n\n");
 					swords--;
 				}
 				else if (t == 1 && rings) {
-					printf("You had no cover in the clearing and have been attacked by\n");
-					printf("%s. Fortunately your Magic\n", CREATURES[creature]);
-					printf("Ring protected you. That ring is now broken and you discard it.\n\n");
+					printw("You had no cover in the clearing and have been attacked by\n");
+					printw("%s. Fortunately your Magic\n", CREATURES[creature]);
+					printw("Ring protected you. That ring is now broken and you discard it.\n\n");
 					rings--;
 				}
 				break;
@@ -418,28 +433,28 @@ int main(int argc, char **argv)
 				tree();
 				if (t == 1)
 				{
-					printf("You rest under the tree and feel better (+1 hp)\n");
+					printw("You rest under the tree and feel better (+1 hp)\n");
 					health++;
 				}
 				else if ( ! t )
 				{
-					printf("A squirrel runs out of the tree, bites your ankle,\nand quickly disappears. (-1 hp)\n");
+					printw("A squirrel runs out of the tree, bites your ankle,\nand quickly disappears. (-1 hp)\n");
 					health--;
 				}
 				break;
 
 				case Seed:
-				printf("Acquiring Seed.\n");
+				printw("Acquiring Seed.\n");
 				seeds++;
 				map[x][y] = Clearing;
 				break;
 
 				case Grapevine:
 				if (randgrape != 2)
-					printf("You eat a grape and feel better. (+1 hp)\n");
+					printw("You eat a grape and feel better. (+1 hp)\n");
 				else
 				{
-					printf("The grapes have been poisoned and gave you a bad day. (-10 hp)\n");
+					printw("The grapes have been poisoned and gave you a bad day. (-10 hp)\n");
 					health -= 10;
 				}
 				break;
@@ -448,19 +463,22 @@ int main(int argc, char **argv)
 				break;
 			}
 		}
+	prompt(politicianCtr, indictedCtr);
+	refresh();
 	}
 
+	clear();
 
-
-	CR
-	printf("Out of %d politicians, you have retired %d of them.\n", politicianCtr, indictedCtr);
-	printf("Your health is %d\n\n", health);
+	printw("\nOut of %d politicians, you have retired %d of them.\n", politicianCtr, indictedCtr);
+	printw("Your health is %d\n\n", health);
 
 	showitems();
 
-	printf("\nEnter 'x' to exit\n");
-	while ( ( c = getchar() ) != EOF && c != 'x' && c != 'X')
+	printw("\nEnter 'x' to exit\n");
+	refresh();
+	while ( ( c = getch() ) != EOF && c != 'x' && c != 'X')
 	{}
+	endwin();
 
 
 	return 0;
@@ -473,7 +491,7 @@ bool accuse(int *actions, int climate)
 {
 	if (map[x][y] != indicted_politician)
 	{
-		printf("You've just indicted the politician!\n");
+		printw("You've just indicted the politician!\n");
 		/* retiredPoliticians++;
 
 		locOfRetiredPoliticians[retiredPoliticians - 1][0] = x;
@@ -483,12 +501,12 @@ bool accuse(int *actions, int climate)
 
 		if ( ! t )
 		{
-			printf("You feel better. (+5 hp)\n");
+			printw("You feel better. (+5 hp)\n");
 			health = health + 5;
 		}
 		else if (t == 1)
 		{
-			printf("You have been blackmailed by an ally of the politican! (-5 hp)\n");
+			printw("You have been blackmailed by an ally of the politican! (-5 hp)\n");
 			health = health - 5;
 		}
 
@@ -497,7 +515,7 @@ bool accuse(int *actions, int climate)
 	}
 	else
 	{
-		printf("This politician has been indicted recently.\n");
+		printw("This politician has been indicted recently.\n");
 		return 0;
 	}
 
@@ -505,110 +523,132 @@ bool accuse(int *actions, int climate)
 
 void showitems(void) {
 
-	printf("Your inventory:\n");
+	printw("Your inventory:\n");
 	if (swords || documents || rings || seeds) {
-		printf("Swords: %d\n",swords);
-		printf("Incriminating Documents: %d\n",documents);
-		printf("Magic Rings: %d\n",rings);
-		printf("Seeds: %d\n", seeds);
+		printw("Swords: %d\n",swords);
+		printw("Incriminating Documents: %d\n",documents);
+		printw("Magic Rings: %d\n",rings);
+		printw("Seeds: %d\n", seeds);
 	}
 
 	else
-		printf("You're not carrying anything");
+		printw("You're not carrying anything");
 
-	CR
+	printw("\n");
 
 }
 
 /* void showpoliticians(int foundpolitician) {
 
 	int i;
-	printf("\nLocations of politicians:\n");
-	printf("%3c %3c\n",'x', 'y');
-	printf("-------------------\n");
+	printw("\nLocations of politicians:\n");
+	printw("%3c %3c\n",'x', 'y');
+	printw("-------------------\n");
 	for (i = 0; i < foundpolitician; i++)
-		printf("%3d %3d\n", locations[i][0], locations[i][1]);
+		printw("%3d %3d\n", locations[i][0], locations[i][1]);
 
-	printf("--- Retired ---\n");
+	printw("--- Retired ---\n");
 	for (i = 0; i < retiredPoliticians; i++)
-		printf("%3d %3d\n", locOfRetiredPoliticians[i][0], locOfRetiredPoliticians[i][1]);
+		printw("%3d %3d\n", locOfRetiredPoliticians[i][0], locOfRetiredPoliticians[i][1]);
 } */
 
-void tree(void) {
-	printf("  \e[32;40moOOOOo\e[0m\n");
-	printf(" \e[32;40moOOOOOOo\e[0m\n");
-	printf("\e[32;40moOOOOOOOOo\e[0m\n");
-	printf(" \e[32;40moOOOOOOo\e[0m\n");
-	printf("  \e[32;40moOOOOo\e[0m\n");
-	printf("    \e[31;40mII\e[0m\n");
-	printf("    \e[31;40mII\e[0m\n");
-	printf("    \e[31;40mII\e[0m\n");
-	printf("    \e[31;40mII\e[0m\n");
-	printf("    \e[31;40mII\e[0m\n");
-	printf("   \e[31;40m/xx\\\e[0m\n");
+void tree(void)
+{
+	start_color();
+	init_pair(1, COLOR_GREEN, COLOR_BLACK);
+	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);
+	attron(COLOR_PAIR(1));
+	printw("  oOOOOo\n");
+	printw(" oOOOOOOo\n");
+	printw("oOOOOOOOOo\n");
+	printw(" oOOOOOOo\n");
+	printw("  OOOOo\n");
+	attroff(COLOR_PAIR(1));
+	attron(COLOR_PAIR(2));
+	printw("    \e[31;40mII\e[0m\n");
+	printw("    \e[31;40mII\e[0m\n");
+	printw("    \e[31;40mII\e[0m\n");
+	printw("    \e[31;40mII\e[0m\n");
+	printw("    \e[31;40mII\e[0m\n");
+	printw("   \e[31;40m/xx\\\e[0m\n");
+	attroff(COLOR_PAIR(2));
 }
 
 
 void wall(void) {
-	printf("\e[31;47mHEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\e[0m\n");
-	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
-	printf("\e[31;47mHEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\e[0m\n");
-	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
-	printf("\e[31;47mHEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\e[0m\n");
-	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
-	printf("\e[31;47mHEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\e[0m\n");
-	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
-	printf("\e[31;47mHEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\e[0m\n");
-	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
-	printf("\e[31;47mHEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\e[0m\n");
-	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
-	printf("\e[31;47mHEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\e[0m\n");
-	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
-	printf("\e[31;47mHEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\e[0m\n");
-	printf("\e[31;47mEHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\e[0m\n");
-	printf("\n");
+	start_color();
+	init_pair(1, COLOR_RED, COLOR_WHITE);
+	attron(COLOR_PAIR(1));
+	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
+	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
+	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
+	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
+	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
+	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
+	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
+	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
+	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
+	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
+	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
+	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
+	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
+	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
+	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
+	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
+	attroff(COLOR_PAIR(1));
+	printw("\n");
 }
 
 void lake(void) {
-	printf("  \e[37;46m__________\e[0m\n");
-	printf(" \e[37;46m/..........\\\e[0m\n");
-	printf(" \e[37;46m\\...........\\____\e[0m\n");
-	printf(" \e[37;46m/................\\\e[0m\n");
-	printf("\e[37;46m/ .................\\\e[0m\n");
-	printf("\e[37;46m\\__________________/\e[0m\n");
-	printf("\n");
+	printw("  \e[37;46m__________\e[0m\n");
+	printw(" \e[37;46m/..........\\\e[0m\n");
+	printw(" \e[37;46m\\...........\\____\e[0m\n");
+	printw(" \e[37;46m/................\\\e[0m\n");
+	printw("\e[37;46m/ .................\\\e[0m\n");
+	printw("\e[37;46m\\__________________/\e[0m\n");
+	printw("\n");
 }
 
-void showMap(void)
+void showMap(bool Visited[X][Y])
 {
-	int i,j;
+	int column, row;
 
-	for (i= X - 1; i >= 0; i--)
+	for (column= X - 1; column >= 0; column--)
 	{
-		printf("\n");
-		for (j=0; j<Y; j++)
+		printw("\n");
+		for (row=0; row<Y; row++)
 		{
-			/* printf("%d", map[i][j]); */
-			/* printf("(%d),(%d)", i, j); */
-			if (g_Visited[i][j] == 1 && map[i][j] == politician)
-				printf("p");
+			/* printw("%d", map[i][j]); */
+			/* printw("(%d),(%d)", i, j); */
+			#if DEBUG==1
+				printw("%d", Visited[column][row]);
+			#endif
+			if (column == x && row == y)
+				printw("@");
+			else if (Visited[column][row] == 1)
+				{
+					if (map[column][row] == politician)
+						printw("p");
+					else if (map[column][row] == Wall)
+						printw("W");
+					else if (map[column][row] == Lake)
+						printw("L");
+					else if (map[column][row] == Grapevine)
+						printw("G");
+					else
+						printw("X");
+				}
 			else
-			if (g_Visited[i][j] == 1 && map[i][j] == Wall)
-				printf("W");
-			else
-			if (g_Visited[i][j] == 1 && map[i][j] == Lake)
-				printf("L");
-			else
-			if (g_Visited[i][j] == 1 && map[i][j] == Grapevine)
-				printf("G");
-			else
-			if (i ==x && j ==y)
-				printf("@");
-
-			else
-				printf("*");
+				printw("*");
 		}
 	}
 
-	printf("\n");
+	printw("\n");
+}
+
+void prompt(short pCtr, short iCtr)
+{
+	printw("\n(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ",
+		y, x, pCtr - iCtr, health);
+	refresh();
 }
