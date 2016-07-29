@@ -115,29 +115,53 @@ Zank/fast:
 	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/build
 .PHONY : Zank/fast
 
-Zank.o: Zank.c.o
-.PHONY : Zank.o
+functions.o: functions.c.o
+.PHONY : functions.o
 
 # target to build an object file
-Zank.c.o:
-	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/Zank.c.o
-.PHONY : Zank.c.o
+functions.c.o:
+	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/functions.c.o
+.PHONY : functions.c.o
 
-Zank.i: Zank.c.i
-.PHONY : Zank.i
+functions.i: functions.c.i
+.PHONY : functions.i
 
 # target to preprocess a source file
-Zank.c.i:
-	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/Zank.c.i
-.PHONY : Zank.c.i
+functions.c.i:
+	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/functions.c.i
+.PHONY : functions.c.i
 
-Zank.s: Zank.c.s
-.PHONY : Zank.s
+functions.s: functions.c.s
+.PHONY : functions.s
 
 # target to generate assembly for a file
-Zank.c.s:
-	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/Zank.c.s
-.PHONY : Zank.c.s
+functions.c.s:
+	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/functions.c.s
+.PHONY : functions.c.s
+
+main.o: main.c.o
+.PHONY : main.o
+
+# target to build an object file
+main.c.o:
+	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/main.c.o
+.PHONY : main.c.o
+
+main.i: main.c.i
+.PHONY : main.i
+
+# target to preprocess a source file
+main.c.i:
+	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/main.c.i
+.PHONY : main.c.i
+
+main.s: main.c.s
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.c.s:
+	$(MAKE) -f CMakeFiles/Zank.dir/build.make CMakeFiles/Zank.dir/main.c.s
+.PHONY : main.c.s
 
 # Help Target
 help:
@@ -148,9 +172,12 @@ help:
 	@echo "... Zank"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... Zank.o"
-	@echo "... Zank.i"
-	@echo "... Zank.s"
+	@echo "... functions.o"
+	@echo "... functions.i"
+	@echo "... functions.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 

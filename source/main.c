@@ -1,88 +1,39 @@
-/**
- *       Zank.c
-
-//      Copyright 2012, 2016 Andy Alt <andyqwerty@users.sourceforge.net>
-//
-//      This program is free software; you can redistribute it and/or modify
-//      it under the terms of the GNU General Public License as published by
-//      the Free Software Foundation; either version 3 of the License, or
-//      (at your option) any later version.
-//
-//      This program is distributed in the hope that it will be useful,
-//      but WITHOUT ANY WARRANTY; without even the implied warranty of
-//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//      GNU General Public License for more details.
-//
-//      You should have received a copy of the GNU General Public License
-//      along with this program; if not, write to the Free Software
-//      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//      MA 02110-1301, USA.
-*/
-
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <ncurses/ncurses.h>
-
-#define DEBUG 0
-/**
- *  Define the grid size
+/*
+ * main.c
+ *
+ * Copyright 2012, 2016 Andy Alt <andyqwerty@users.sourceforge.net>
+ *
+ * https://github.com/andy5995/Zank
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ *
  */
 
-#define X 7
-#define Y 7
-
-/* #define VER "2016.07.24-01alpha" */
-#define VER "unstable"
-#define AUTHOR "Andy Alt, and inspired by games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix"
-
-/* #define OFF_MAP printw("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2; */
-
-bool accuse(int *actions, int climate);
-void showitems(void);
-/* void showpoliticians(int foundpolitician); */
-
-void tree(void);
-void wall(void);
-void lake(void);
-
-
-void showMap(bool Visited[X][Y]);
-void prompt(short pCtr, short iCtr);
-bool borderPatrol(void);
-
-int x,y;
-int map[X][Y];
-
-int documents = 0;
-int rings = 0;
-int swords = 0;
-int seeds = 0;
-
-
-
-int health = 100;
-
-enum {
-	Tree,
-	Lake,
-	Clearing,
-	politician,
-	Wall,
-	an_incriminating_document,
-	Sword,
-	Magic_Ring,
-	indicted_politician,
-	MagicWaterfall,
-	Dried_up_Waterfall,
-	Seed,
-	Grapevine
-	};
+#include "main.h"
+#include "function_prototypes.h"
 
 int main(int argc, char **argv)
 {
+	documents = 0;
+	rings = 0;
+	swords = 0;
+	seeds = 0;
+	health = 100;
+
 	int climate;
 	char *habitat[] = {
 		"a Tree",
@@ -481,179 +432,5 @@ int main(int argc, char **argv)
 	return 0;
 
 
-}
-
-
-bool accuse(int *actions, int climate)
-{
-	if (map[x][y] != indicted_politician)
-	{
-		printw("You've just indicted the politician!\n");
-		/* retiredPoliticians++;
-
-		locOfRetiredPoliticians[retiredPoliticians - 1][0] = x;
-		locOfRetiredPoliticians[retiredPoliticians - 1][1] = y; */
-
-		int t = rand() % 2;
-
-		if ( ! t )
-		{
-			printw("You feel better. (+5 hp)\n");
-			health = health + 5;
-		}
-		else if (t == 1)
-		{
-			printw("You have been blackmailed by an ally of the politican! (-5 hp)\n");
-			health = health - 5;
-		}
-
-		map[x][y] = 8;
-		return 1;
-	}
-	else
-	{
-		printw("This politician has been indicted recently.\n");
-		return 0;
-	}
-
-}
-
-void showitems(void) {
-
-	printw("Your inventory:\n");
-	if (swords || documents || rings || seeds) {
-		printw("Swords: %d\n",swords);
-		printw("Incriminating Documents: %d\n",documents);
-		printw("Magic Rings: %d\n",rings);
-		printw("Seeds: %d\n", seeds);
-	}
-
-	else
-		printw("You're not carrying anything");
-
-	printw("\n");
-
-}
-
-/* void showpoliticians(int foundpolitician) {
-
-	int i;
-	printw("\nLocations of politicians:\n");
-	printw("%3c %3c\n",'x', 'y');
-	printw("-------------------\n");
-	for (i = 0; i < foundpolitician; i++)
-		printw("%3d %3d\n", locations[i][0], locations[i][1]);
-
-	printw("--- Retired ---\n");
-	for (i = 0; i < retiredPoliticians; i++)
-		printw("%3d %3d\n", locOfRetiredPoliticians[i][0], locOfRetiredPoliticians[i][1]);
-} */
-
-void tree(void)
-{
-	start_color();
-	init_pair(1, COLOR_GREEN, COLOR_BLACK);
-	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);
-	attron(COLOR_PAIR(1));
-	printw("  oOOOOo\n");
-	printw(" oOOOOOOo\n");
-	printw("oOOOOOOOOo\n");
-	printw(" oOOOOOOo\n");
-	printw("  OOOOo\n");
-	attroff(COLOR_PAIR(1));
-	attron(COLOR_PAIR(2));
-	printw("    \e[31;40mII\e[0m\n");
-	printw("    \e[31;40mII\e[0m\n");
-	printw("    \e[31;40mII\e[0m\n");
-	printw("    \e[31;40mII\e[0m\n");
-	printw("    \e[31;40mII\e[0m\n");
-	printw("   \e[31;40m/xx\\\e[0m\n");
-	attroff(COLOR_PAIR(2));
-}
-
-
-void wall(void) {
-	start_color();
-	init_pair(1, COLOR_RED, COLOR_WHITE);
-	attron(COLOR_PAIR(1));
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	attroff(COLOR_PAIR(1));
-	printw("\n");
-}
-
-void lake(void) {
-	printw("  \e[37;46m__________\e[0m\n");
-	printw(" \e[37;46m/..........\\\e[0m\n");
-	printw(" \e[37;46m\\...........\\____\e[0m\n");
-	printw(" \e[37;46m/................\\\e[0m\n");
-	printw("\e[37;46m/ .................\\\e[0m\n");
-	printw("\e[37;46m\\__________________/\e[0m\n");
-	printw("\n");
-}
-
-void showMap(bool Visited[X][Y])
-{
-	int column, row;
-
-	for (column= X - 1; column >= 0; column--)
-	{
-		printw("\n");
-		for (row=0; row<Y; row++)
-		{
-			/* printw("%d", map[i][j]); */
-			/* printw("(%d),(%d)", i, j); */
-			#if DEBUG==1
-				printw("%d", Visited[column][row]);
-			#endif
-			if (column == x && row == y)
-				printw("@");
-			else if (Visited[column][row] == 1)
-				{
-					if (map[column][row] == politician)
-						printw("p");
-					else if (map[column][row] == Wall)
-						printw("W");
-					else if (map[column][row] == Lake)
-						printw("L");
-					else if (map[column][row] == Grapevine)
-						printw("G");
-					else
-						printw("X");
-				}
-			else
-				printw("*");
-		}
-	}
-
-	printw("\n");
-}
-
-void prompt(short pCtr, short iCtr)
-{
-	printw("\n(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ",
-		y, x, pCtr - iCtr, health);
-	refresh();
-}
-
-bool borderPatrol(void)
-{
-	printw("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); 
-	health = health - 2;
-	return 1;
 }
 

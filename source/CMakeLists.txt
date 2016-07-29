@@ -17,6 +17,8 @@ SET(ProjectName Zank)
 #include_directories(${PCL_INCLUDE_DIRS})
 #include_directories("G:/Matlab/extern/include")
 #include_directories("C:/Program Files/MobileRobots/Aria/include")
+include_directories("/usr/include")
+#include_directories("/usr/include/x86_64-linux-gnu")
 
 # here we specify the additional library directories for the linker in the project. These files come in additional library directories
 # option of VC++ project.
@@ -25,6 +27,8 @@ SET(ProjectName Zank)
 #link_directories(${PCL_LIBRARY_DIRS})
 #link_directories("G:/Matlab/extern/lib/win32/microsoft")
 #link_directories("C:/Program Files/MobileRobots/Aria/lib")
+#link_directories("/lib32")
+#link_directories("/usr/lib/x86_64-linux-gnu")
 
 # here we add definitions for any package if requred.
 #add_definitions(${PCL_DEFINITIONS})
@@ -35,10 +39,18 @@ SET(ProjectName Zank)
 # Followed by the executable name come all your source and header files.
 # All cpp fles will be clubbed into source folder and all .h files will be added to header files folder of the project.
 #add_executable (Zank Local.cpp part.h grab.h interface.h test.cpp test.h)
-add_executable (Zank Zank.c)
+
+IF(WIN32)
+	SET(BIN_OUTPUT Zank.exe)
+ELSE()
+	SET(BIN_OUTPUT Zank)
+ENDIF()
+
+add_executable (${BIN_OUTPUT} main.c functions.c)
 
 # There may be some additional dependencies which you may have to specify for the project, which you may do as in following lines.
 # Note that first parameter is the executable name.
+target_link_libraries (${BIN_OUTPUT} ncurses)
 #target_link_libraries (MyApp ${PCL_LIBRARIES} libeng.lib libmx.lib libmex.lib libmat.lib Aria.lib winmm.lib wsock32.lib)
 # Add the required libraries for linking:
 #TARGET_LINK_LIBRARIES(${sampleName}
