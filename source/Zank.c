@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <ncurses.h>
+#include <ncurses/ncurses.h>
 
 #define DEBUG 0
 /**
@@ -38,7 +38,7 @@
 #define VER "unstable"
 #define AUTHOR "Andy Alt, and inspired by games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix"
 
-#define OFF_MAP printw("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2;
+/* #define OFF_MAP printw("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2; */
 
 bool accuse(int *actions, int climate);
 void showitems(void);
@@ -51,6 +51,7 @@ void lake(void);
 
 void showMap(bool Visited[X][Y]);
 void prompt(short pCtr, short iCtr);
+bool borderPatrol(void);
 
 int x,y;
 int map[X][Y];
@@ -229,8 +230,7 @@ int main(int argc, char **argv)
 				printw("East\n");
 			}
 			else {
-				OFF_MAP
-				flag = 1;
+				flag = borderPatrol();
 			}
 			break;
 
@@ -241,8 +241,7 @@ int main(int argc, char **argv)
 				printw("West\n");
 			}
 			else {
-				OFF_MAP
-				flag = 1;
+				flag = borderPatrol();
 			}
 			break;
 
@@ -252,9 +251,8 @@ int main(int argc, char **argv)
 				x = x + South;
 				printw("South\n");
 			}
-			else {
-				OFF_MAP
-				flag = 1;
+			else{
+				flag = borderPatrol();
 			}
 			break;
 
@@ -265,8 +263,7 @@ int main(int argc, char **argv)
 				printw("North\n");
 			}
 			else {
-				OFF_MAP
-				flag = 1;
+				flag = borderPatrol();
 			}
 			break;
 
@@ -652,3 +649,11 @@ void prompt(short pCtr, short iCtr)
 		y, x, pCtr - iCtr, health);
 	refresh();
 }
+
+bool borderPatrol(void)
+{
+	printw("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); 
+	health = health - 2;
+	return 1;
+}
+
