@@ -25,38 +25,41 @@
 
 #include "functions.h"
 
-bool accuse(int *actions, int climate)
+bool accuse(void)
 {
-	if (map[x][y] != indicted_politician)
-	{
-		printw("You've just indicted the politician!\n");
-		/* retiredPoliticians++;
-
-		locOfRetiredPoliticians[retiredPoliticians - 1][0] = x;
-		locOfRetiredPoliticians[retiredPoliticians - 1][1] = y; */
-
-		int t = rand() % 2;
-
-		if ( ! t )
-		{
-			printw("You feel better. (+5 hp)\n");
-			health = health + 5;
-		}
-		else if (t == 1)
-		{
-			printw("You have been blackmailed by an ally of the politican! (-5 hp)\n");
-			health = health - 5;
-		}
-
-		map[x][y] = 8;
-		return 1;
-	}
-	else
+	if (map[x][y] == indicted_politician)
 	{
 		printw("This politician has been indicted recently.\n");
 		return 0;
 	}
 
+	printw("You've made a formal charge against the politician!\n");
+
+	int t = rand() % 4;
+
+	if (t)
+	{
+		printw("A grand jury has found him guilty.\n");
+		printw("You feel better. (+5 hp)\n\n");
+		health = health + 5;
+		t = rand() % 3;
+
+		if (!t)
+		{
+			printw("You have been blackmailed by an ally of the politican! (-5 hp)\n");
+			health = health - 5;
+		}
+	}
+	else
+	{
+		printw("A grand jury has found him innocent, but after being publicly disgraced,\n");
+		printw("he chooses early retirement\n");
+		printw("You're plagued with a guilty conscience. (-5 HP)\n");
+		health = health - 5;
+	}
+
+	map[x][y] = indicted_politician;
+	return 1;
 }
 
 void showitems(void) {

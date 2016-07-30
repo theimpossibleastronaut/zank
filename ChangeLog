@@ -6,7 +6,15 @@ using tolower() after keypress - capslock shouldn't matter anymore
 
 added 'h'elp to prompt
 
+added ability to travel by using the cursor keys (thanks to mzdelong for the suggestion)
+
 Updated lake()
+
+Renamed some variables: habitat[] = mapObject[] / climate = ObjAtCurrentPos
+
+reworked and enhanced accuse()
+
+reworked code relating to acquiring magic rings, documents, and swords
 
 
 2016-07-29

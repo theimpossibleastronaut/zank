@@ -44,7 +44,7 @@
 #define Y 7
 
 /* #define VER "2016.07.24-01alpha" */
-#define VER "unstable"
+#define VER "testing"
 #define AUTHOR "Andy Alt, and inspired by games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix"
 
 /* #define OFF_MAP printw("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2; */
@@ -58,6 +58,10 @@ int swords;
 int seeds;
 int health;
 
+/**
+* NOTE: the order here must match with the objects listed in the
+* mapObjects[] declaration in main.c
+*/
 enum {
 	Tree,
 	Lake,

@@ -34,8 +34,13 @@ int main(int argc, char **argv)
 	seeds = 0;
 	health = 100;
 
-	int climate;
-	char *habitat[] = {
+	int ObjAtCurrentPos;
+
+	/**
+	 * NOTE: the order here must match with the object listed in the
+	 * enum declaration in Zank.h
+	 */
+	char *mapObject[] = {
 		"a Tree",
 		"a Lake",
 		"a Clearing",
@@ -93,13 +98,9 @@ int main(int argc, char **argv)
 	const int CREATURE_COUNT = 36;
 	int creature;
 
-	int actions[] = { 0, 0, 0, 69, 1, 10, 10, 10 };
-
-	char *item;
-
 	bool flag = 0;
 
-	srand( time( 0 ) );
+	srand( time(0) );
 
 /**
  * Generate coordinates for Magic Waterfall
@@ -120,12 +121,12 @@ int main(int argc, char **argv)
 		{
 			if (rx != column || ry != row)
 			{
-				climate = rand() % 8;
+				ObjAtCurrentPos = rand() % 8;
 
-				if (climate == politician)
+				if (ObjAtCurrentPos == politician)
 					politicianCtr++;
 
-				map[column][row] = climate;
+				map[column][row] = ObjAtCurrentPos;
 			}
 			else map[column][row] = MagicWaterfall;
 		}
@@ -167,13 +168,17 @@ int main(int argc, char **argv)
 
 	bool isStarting = 1;
 
+	keypad(stdscr, TRUE);
+
 	while ( c != EOF && health > 0 && politicianCtr != indictedCtr && c != 'q')
 	{
 		if (isStarting == 0)
 			c = getch();
 		else
+		{
 			c = 'b';
 			isStarting = 0;
+		}
 
 		int t;
 		t = rand() % 2;
@@ -184,6 +189,28 @@ int main(int argc, char **argv)
 		/* This way caps lock doesn't matter */
 		if (isupper(c))
 			c = tolower(c);
+
+		switch (c)
+		{
+			case KEY_UP:
+			c = 'n';
+			break;
+
+			case KEY_DOWN:
+			c = 's';
+			break;
+
+			case KEY_LEFT:
+			c = 'w';
+			break;
+
+			case KEY_RIGHT:
+			c = 'e';
+			break;
+
+			default:
+			break;
+		}
 
 		switch (c)
 		{
@@ -239,19 +266,13 @@ int main(int argc, char **argv)
 			case 'h':
 			printw("Help and Commands:\n");
 			printw("\tGo in direction: e = East ; w = West ; n = North ; s = South\n");
+			printw("\t\t(Or use the left/right/up/down cursor keys\n");
 			printw("\ti = show inventory\n");
 			printw("\tm = display map\n");
 			printw("\tq = quit game\n");
 
 			flag = 1;
 			break;
-
-/*
-			case '\n':
-			prompt(politicianCtr, indictedCtr);
-			flag = 1;
-			break;
-			* */
 
 			case 'm':
 			showMap(Visited);
@@ -268,40 +289,46 @@ int main(int argc, char **argv)
 			break;
 		}
 
-		isStarting = 0;
 		if (!flag)
 		{
 			Visited[x][y] = 1;
 
-			climate = map[x][y];
-			item = strdup(habitat[climate]);
+			ObjAtCurrentPos = map[x][y];
 
-			printw("\nYou see %s\n", item);
+			printw("\nYou see %s\n", mapObject[ObjAtCurrentPos]);
 
-/**
- * This needs to be reworked
- * actions[5],[6],or[7] will == 10, that would be the 6,7,8th item in the enum list
- * 10 is just an arbitrary value defined in actions[] to determine whether or not
- * an items can be acquired
- */
-
-			if (actions[climate] == 10)
+			bool acquire = 0;
+			switch (ObjAtCurrentPos)
 			{
-				printw("Acquiring %s\n", item);
+				case an_incriminating_document:
+				acquire = 1;
+				documents++;
+				break;
 
-				if (strcmp(item,"an incriminating document") == 0 )
-					documents++;
-				else if (strcmp(item,"a Magic Ring") == 0 )
-					rings++;
-				else if (strcmp(item,"a Sword") == 0 )
-					swords++;
+				case Magic_Ring:
+				acquire = 1;
+				rings++;
+				break;
+
+				case Sword:
+				acquire = 1;
+				swords++;
+				break;
+
+				default:
+				break;
+			}
+
+			if (acquire)
+			{
+				printw("Acquiring %s\n", mapObject[map[x][y]]);
 				map[x][y] = Seed;
 			}
 
 			printw("\n");
 
 
-			switch (climate)
+			switch (ObjAtCurrentPos)
 			{
 				int randgrape;
 				randgrape = rand() % 4;
@@ -313,7 +340,7 @@ int main(int argc, char **argv)
 
 				if (documents)
 				{
-					if (accuse(actions, climate))
+					if (accuse())
 					{
 						documents--;
 						indictedCtr++;
@@ -321,13 +348,13 @@ int main(int argc, char **argv)
 				}
 				else if (rings)
 				{
-					if (accuse(actions, climate));
+					if (accuse());
 					{
 						rings--;
 						indictedCtr++;
 					}
 				}
-				else if (! documents && ! rings)
+				else if (!documents && !rings)
 					printw("If you had some incriminating documents or magic rings,\nyou'd be able to indict him.\n");
 				break;
 
