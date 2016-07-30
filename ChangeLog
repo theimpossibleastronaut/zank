@@ -1,3 +1,14 @@
+2016-07-30
+
+Fixed #5 - When starting, player should see what's in his current location
+
+using tolower() after keypress - capslock shouldn't matter anymore
+
+added 'h'elp to prompt
+
+Updated lake()
+
+
 2016-07-29
 
 Split the code into different files

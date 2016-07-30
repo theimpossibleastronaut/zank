@@ -103,12 +103,12 @@ void tree(void)
 	printw("  OOOOo\n");
 	attroff(COLOR_PAIR(1));
 	attron(COLOR_PAIR(2));
-	printw("    \e[31;40mII\e[0m\n");
-	printw("    \e[31;40mII\e[0m\n");
-	printw("    \e[31;40mII\e[0m\n");
-	printw("    \e[31;40mII\e[0m\n");
-	printw("    \e[31;40mII\e[0m\n");
-	printw("   \e[31;40m/xx\\\e[0m\n");
+	printw("    II\n");
+	printw("    II\n");
+	printw("    II\n");
+	printw("    II\n");
+	printw("    II\n");
+	printw("   /xx\\\n");
 	attroff(COLOR_PAIR(2));
 }
 
@@ -129,23 +129,49 @@ void wall(void) {
 	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
 	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
 	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-	printw("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-	printw("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
 	attroff(COLOR_PAIR(1));
 	printw("\n");
 }
 
-void lake(void) {
-	printw("  \e[37;46m__________\e[0m\n");
-	printw(" \e[37;46m/..........\\\e[0m\n");
-	printw(" \e[37;46m\\...........\\____\e[0m\n");
-	printw(" \e[37;46m/................\\\e[0m\n");
-	printw("\e[37;46m/ .................\\\e[0m\n");
-	printw("\e[37;46m\\__________________/\e[0m\n");
+void lake(void)
+{
+	start_color();
+	init_pair(1, COLOR_WHITE, COLOR_BLUE);
+	attron(COLOR_PAIR(1));
+	printw("            \n");
+	printw("              \n");
+	printw("                  \n");
+	printw("                    \n");
+	printw("                     \n");
+	printw("                      \n");
+	printw("                        \n");
+	printw("                       \n");
+	printw("                      \n");
+	printw("                    \n");
+	printw("                  \n");
+	printw("                \n");
+	printw("             \n");
+	printw("          \n");
+	attroff(COLOR_PAIR(1));
 	printw("\n");
 }
+
+
+
+/*void lake(void)
+{
+	start_color();
+	init_pair(1, COLOR_WHITE, COLOR_BLUE);
+	attron(COLOR_PAIR(1));
+	printw("  __________\n");
+	printw(" /..........\\\n");
+	printw(" \\...........\\____\n");
+	printw(" /................\\\n");
+	printw("/ .................\\\n");
+	printw("\\__________________/\n");
+	attroff(COLOR_PAIR(1));
+	printw("\n");
+}*/
 
 void showMap(bool Visited[X][Y])
 {
@@ -197,4 +223,3 @@ bool borderPatrol(void)
 	health = health - 2;
 	return 1;
 }
-

@@ -97,8 +97,6 @@ int main(int argc, char **argv)
 
 	char *item;
 
-	bool deed;
-
 	bool flag = 0;
 
 	srand( time( 0 ) );
@@ -153,7 +151,7 @@ int main(int argc, char **argv)
 
 	printw("\nZank version %s\n", VER);
 	printw("By %s\n", AUTHOR);
-	printw("Special thanks to mzdelong\n");
+	printw("With code contributions from mzdelong\n");
 	refresh();
 
 	prompt(politicianCtr, indictedCtr);
@@ -167,11 +165,26 @@ int main(int argc, char **argv)
 		for (row=0; row<Y; row++)
 			Visited[column][row]=0;
 
-	while ( ( c = getch() ) != EOF && health > 0 && politicianCtr != indictedCtr && c != 'q')
+	bool isStarting = 1;
+
+	while ( c != EOF && health > 0 && politicianCtr != indictedCtr && c != 'q')
 	{
-		int t = rand() % 2;
+		if (isStarting == 0)
+			c = getch();
+		else
+			c = 'b';
+			isStarting = 0;
+
+		int t;
+		t = rand() % 2;
 		flag = 0;
+
 		clear();
+
+		/* This way caps lock doesn't matter */
+		if (isupper(c))
+			c = tolower(c);
+
 		switch (c)
 		{
 			case 'e':
@@ -224,18 +237,28 @@ int main(int argc, char **argv)
 			break;
 
 			case 'h':
-			printw("HP: %d\n\n",health);
+			printw("Help and Commands:\n");
+			printw("\tGo in direction: e = East ; w = West ; n = North ; s = South\n");
+			printw("\ti = show inventory\n");
+			printw("\tm = display map\n");
+			printw("\tq = quit game\n");
+
 			flag = 1;
 			break;
 
+/*
 			case '\n':
 			prompt(politicianCtr, indictedCtr);
 			flag = 1;
 			break;
+			* */
 
 			case 'm':
 			showMap(Visited);
 			flag = 1;
+			break;
+
+			case 'b': /* b)eginning of game */
 			break;
 
 			default:
@@ -245,6 +268,7 @@ int main(int argc, char **argv)
 			break;
 		}
 
+		isStarting = 0;
 		if (!flag)
 		{
 			Visited[x][y] = 1;
@@ -279,7 +303,8 @@ int main(int argc, char **argv)
 
 			switch (climate)
 			{
-				int randgrape = rand() % 4;
+				int randgrape;
+				randgrape = rand() % 4;
 
 				case politician:
 				/* locations[foundpolitician][0] = x;
@@ -288,8 +313,7 @@ int main(int argc, char **argv)
 
 				if (documents)
 				{
-					deed = accuse(actions, climate);
-					if (deed)
+					if (accuse(actions, climate))
 					{
 						documents--;
 						indictedCtr++;
@@ -297,8 +321,7 @@ int main(int argc, char **argv)
 				}
 				else if (rings)
 				{
-					deed = accuse(actions, climate);
-					if (deed)
+					if (accuse(actions, climate));
 					{
 						rings--;
 						indictedCtr++;

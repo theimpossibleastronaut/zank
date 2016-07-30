@@ -1,4 +1,4 @@
-# Install script for directory: /home/andy/src/zank/source
+# Install script for directory: /home/andy/src/Zank/source
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ else()
   set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 endif()
 
-file(WRITE "/home/andy/src/zank/build/${CMAKE_INSTALL_MANIFEST}" "")
+file(WRITE "/home/andy/src/Zank/build/${CMAKE_INSTALL_MANIFEST}" "")
 foreach(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  file(APPEND "/home/andy/src/zank/build/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  file(APPEND "/home/andy/src/Zank/build/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 endforeach()
