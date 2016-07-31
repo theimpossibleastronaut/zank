@@ -40,8 +40,8 @@
  *  Define the grid size
  */
 
-#define X 7
-#define Y 7
+#define X 9
+#define Y 9
 
 /* #define VER "2016.07.24-01alpha" */
 #define VER "testing"

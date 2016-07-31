@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 # Above line indicates to Cmake that minimum version 2.8 is required.
 # As you may have noted all lines beginning with hash symbol are treated as comments by Cmake.
 SET(ProjectName Zank)
@@ -18,6 +18,7 @@ SET(ProjectName Zank)
 #include_directories("G:/Matlab/extern/include")
 #include_directories("C:/Program Files/MobileRobots/Aria/include")
 include_directories("/usr/include")
+include_directories("/mingw/include/ncurses")
 #include_directories("/usr/include/x86_64-linux-gnu")
 
 # here we specify the additional library directories for the linker in the project. These files come in additional library directories
@@ -40,11 +41,7 @@ include_directories("/usr/include")
 # All cpp fles will be clubbed into source folder and all .h files will be added to header files folder of the project.
 #add_executable (Zank Local.cpp part.h grab.h interface.h test.cpp test.h)
 
-IF(WIN32)
-	SET(BIN_OUTPUT Zank.exe)
-ELSE()
-	SET(BIN_OUTPUT Zank)
-ENDIF()
+SET(BIN_OUTPUT Zank)
 
 add_executable (${BIN_OUTPUT} main.c functions.c)
 
