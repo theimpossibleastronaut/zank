@@ -1,0 +1,3 @@
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/Win32/CMakeFiles/Zank.dir
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/Win32/CMakeFiles/edit_cache.dir
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/Win32/CMakeFiles/rebuild_cache.dir

@@ -3,7 +3,7 @@
  *
  * Copyright 2012, 2016 Andy Alt <andyqwerty@users.sourceforge.net>
  *
- * https://github.com/andy5995/Zank
+ * https://github.com/andy5995/Zank/wiki
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

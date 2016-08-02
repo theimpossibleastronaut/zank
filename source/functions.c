@@ -3,7 +3,7 @@
  *
  * Copyright 2012, 2016 Andy Alt <andyqwerty@users.sourceforge.net>
  *
- * https://github.com/andy5995/Zank
+ * https://github.com/andy5995/Zank/wiki
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,10 +146,6 @@ void lake(void)
 	printw("                  \n");
 	printw("                    \n");
 	printw("                     \n");
-	printw("                      \n");
-	printw("                        \n");
-	printw("                       \n");
-	printw("                      \n");
 	printw("                    \n");
 	printw("                  \n");
 	printw("                \n");
@@ -159,23 +155,6 @@ void lake(void)
 	printw("\n");
 }
 
-
-
-/*void lake(void)
-{
-	start_color();
-	init_pair(1, COLOR_WHITE, COLOR_BLUE);
-	attron(COLOR_PAIR(1));
-	printw("  __________\n");
-	printw(" /..........\\\n");
-	printw(" \\...........\\____\n");
-	printw(" /................\\\n");
-	printw("/ .................\\\n");
-	printw("\\__________________/\n");
-	attroff(COLOR_PAIR(1));
-	printw("\n");
-}*/
-
 void showMap(bool Visited[X][Y])
 {
 	int column, row;
@@ -183,10 +162,9 @@ void showMap(bool Visited[X][Y])
 	for (column= X - 1; column >= 0; column--)
 	{
 		printw("\n");
+
 		for (row=0; row<Y; row++)
 		{
-			/* printw("%d", map[i][j]); */
-			/* printw("(%d),(%d)", i, j); */
 			#if DEBUG==1
 				printw("%d", Visited[column][row]);
 			#endif
@@ -217,7 +195,6 @@ void prompt(short pCtr, short iCtr)
 {
 	printw("\n(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ",
 		y, x, pCtr - iCtr, health);
-	refresh();
 }
 
 bool borderPatrol(void)

@@ -3,7 +3,7 @@
  *
  * Copyright 2012, 2016 Andy Alt <andyqwerty@users.sourceforge.net>
  *
- * https://github.com/andy5995/Zank
+ * https://github.com/andy5995/Zank/wiki
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@
 #include <ctype.h>
 #include <ncurses.h>
 
-#define DEBUG 0
+#define DEBUG curses
 /**
  *  Define the grid size
  */
@@ -43,9 +43,9 @@
 #define X 9
 #define Y 9
 
-/* #define VER "2016.07.24-01alpha" */
-#define VER "testing"
-#define AUTHOR "Andy Alt, and inspired by games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix"
+#define VER "2016.08.02.01alpha"
+/* #define VER "testing" */
+#define AUTHOR "Andy Alt"
 
 /* #define OFF_MAP printw("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2; */
 

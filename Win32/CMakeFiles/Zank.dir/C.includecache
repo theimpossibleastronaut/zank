@@ -1,0 +1,66 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mingw/include/ncurses/ncurses.h
+ncursesw/ncurses_dll.h
+-
+stdint.h
+-
+stdio.h
+-
+stdarg.h
+-
+stddef.h
+-
+stdbool.h
+-
+libutf8.h
+-
+wchar.h
+-
+ncursesw/unctrl.h
+-
+
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/Zank.h
+stdio.h
+-
+time.h
+-
+stdlib.h
+-
+string.h
+-
+stdbool.h
+-
+ctype.h
+-
+ncurses.h
+-
+
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/function_prototypes.h
+Zank.h
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/Zank.h
+
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/functions.c
+functions.h
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/functions.h
+
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/functions.h
+Zank.h
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/Zank.h
+
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/main.c
+main.h
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/main.h
+function_prototypes.h
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/function_prototypes.h
+
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/main.h
+Zank.h
+C:/Documents and Settings/Administrator/My Documents/Downloads/Zank-master/source/Zank.h
+

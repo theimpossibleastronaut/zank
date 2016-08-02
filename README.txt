@@ -2,6 +2,8 @@ Text-based adventure game; can you find enough magic rings and incriminating doc
 
 Zank home page: https://github.com/andy5995/Zank/wiki
 
+Dependencies: libncurses (make and cmake optional to build)
+
 The windows .exe file is in the win32/ folder of the Zank archive.
 It was built using MinGW on ReactOS 4.01 ( https://www.reactos.org/ ) and hasn't yet been fully tested.
 

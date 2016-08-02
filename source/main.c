@@ -3,7 +3,7 @@
  *
  * Copyright 2012, 2016 Andy Alt <andyqwerty@users.sourceforge.net>
  *
- * https://github.com/andy5995/Zank
+ * https://github.com/andy5995/Zank/wiki
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,8 +78,8 @@ int main(int argc, char **argv)
 		"the Supreme Court",
 		"political repercussions", /* 20 */
 		"a misguided priest",
-		"an lawman who has to feed his family",
-		"your mom",
+		"a lawman who has to feed his family",
+		"an arrogant pop star",
 		"bad gas",
 		"your underpaid babysitter", /* 25 */
 		"the ogre next door",
@@ -96,11 +96,15 @@ int main(int argc, char **argv)
 	};
 
 	const int CREATURE_COUNT = 36;
+
 	int creature;
 
 	bool flag = 0;
 
 	srand( time(0) );
+
+	int randgrape;
+	randgrape = rand() % 4;
 
 /**
  * Generate coordinates for Magic Waterfall
@@ -155,8 +159,8 @@ int main(int argc, char **argv)
 	printw("With code contributions from mzdelong\n");
 	refresh();
 
-	prompt(politicianCtr, indictedCtr);
-	refresh();
+	/* prompt(politicianCtr, indictedCtr);
+	refresh(); */
 
 	bool Visited[X][Y];
 	/**
@@ -168,12 +172,18 @@ int main(int argc, char **argv)
 
 	bool isStarting = 1;
 
+	/**
+	* from the ncurses library - needed for cursor key checking
+	*/
 	keypad(stdscr, TRUE);
 
 	while ( c != EOF && health > 0 && politicianCtr != indictedCtr && c != 'q')
 	{
 		if (isStarting == 0)
+		{
 			c = getch();
+			clear();
+		}
 		else
 		{
 			c = 'b';
@@ -184,7 +194,7 @@ int main(int argc, char **argv)
 		t = rand() % 2;
 		flag = 0;
 
-		clear();
+
 
 		/* This way caps lock doesn't matter */
 		if (isupper(c))
@@ -330,9 +340,6 @@ int main(int argc, char **argv)
 
 			switch (ObjAtCurrentPos)
 			{
-				int randgrape;
-				randgrape = rand() % 4;
-
 				case politician:
 				/* locations[foundpolitician][0] = x;
 				locations[foundpolitician][1] = y;
@@ -394,7 +401,7 @@ int main(int argc, char **argv)
 				case MagicWaterfall:
 				printw("You swim at the base of the Magic Waterfall and feel much better. (+40 hp)\n");
 				health = health + 40;
-				map[x][y] = 10;
+				map[x][y] = Dried_up_Waterfall;
 				break;
 
 				case Clearing:
@@ -403,7 +410,13 @@ int main(int argc, char **argv)
 				{
 					printw("You plant a seed. You feel better. (+1 hp)\n");
 					seeds--;
-					map[x][y] = Grapevine;
+					t = rand() % 3;
+
+					/**
+					 * map[x][y] will equal one of the items for the enum declaration
+					 * item 5-7
+					 */
+					map[x][y] = t + an_incriminating_document;
 				}
 
 				if ( t == 1 && ! swords)
