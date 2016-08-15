@@ -41,70 +41,57 @@ int main(int argc, char **argv)
 	 * enum declaration in Zank.h
 	 */
 	char *mapObject[] = {
-		"a Tree",
-		"a Lake",
-		"a Clearing",
+		"a tree",
+		"a lake",
+		"a clearing",
 		"a politician",
-		"a Wall",
+		"a wall",
 		"an incriminating document",
-		"a Sword",
-		"a Magic Ring",
+		"a sword",
+		"a magic ring",
 		"a retired politician",
 		"a Magic Waterfall",
-		"a Dried up Waterfall",
-		"a Seed",
-		"a Grapevine"
+		"a dried up waterfall",
+		"a magic seed",
+		"a grapevine"
 	};
 
-	const char *CREATURES[] = {
-		"an evil gorilla",
-		"a deranged vulture",
-		"Angry Smurf(tm)",
-		"a religious fanatic",
-		"an imaginary enemy", /* 5 */
-		"Emperor Killewe",
-		"meddling kids in a van",
-		"everyone you ever wronged",
-		"your worst nightmare",
-		"a copyrighted creature called \"Gollum\"", /* 10 */
-		"a starving artist",
-		"an innocent-looking rabbit",
-		"your own insecurities",
-		"your evil twin",
-		"a telemarketer",   /* 15 */
-		"a nasty band of evil cannibalistic cave dwellers",
-		"a band of bloodthirsty reporters",
-		"lobbyists",
-		"the Supreme Court",
-		"political repercussions", /* 20 */
-		"a misguided priest",
-		"a lawman who has to feed his family",
-		"an arrogant pop star",
-		"bad gas",
-		"your underpaid babysitter", /* 25 */
-		"the ogre next door",
-		"a lightning bolt sent by Zeus",
-		"a runaway airplane propeller",
-		"a crazed drug addict",
-		"Oscar the Grouch",  /* 30 */
-		"an unusually agressive gerbil",
-		"hallucinations",
-		"a guilty conscience",
-		"a sense of strangeness",
-		"a flying six-volt lantern battery", /* 35 */
-		"tax collectors"
-	};
+struct creatures creat[CREATURE_COUNT] = {
 
-	const int CREATURE_COUNT = 36;
+	{ "an evil gorilla", 6 },
+	{ "a deranged vulture", 5 },
+	{ "Angry Smurf(tm)", 2 },
+	{ "a religious fanatic", 3 },
+	{ "an imaginary enemy", 1 },
+	{ "Emperor Killewe", 7 },
+	{ "meddling kids in a van", 10 },
+	{ "everyone you ever wronged", 15 },
+	{ "your worst nightmare", 20 },
+	{ "a starving artist", 1 },
+	{ "an innocent-looking rabbit", 1 },
+	{ "your own insecurities", 7 },
+	{ "your evil twin", 4 },
+	{ "a telemarketer", 3 },
+	{ "a nasty band of evil cannibalistic cave dwellers", 12 },
+	{ "political repercussions", 6 },
+	{ "a misguided priest", 2 },
+	{ "a lawman who has to feed his family", 3 },
+	{ "an arrogant pop star", 2 },
+	{ "the ogre next door", 4 },
+	{ "a lightning bolt sent by Zeus", 15 },
+	{ "an unusually agressive gerbil", 3 },
+	{ "a sense of strangeness", 1 },
+	{ "a guilty conscience", 4 },
+	{ "hallucinations", 6 }
+};
 
 	int creature;
 
 	bool flag = 0;
 
-	srand( time(0) );
+	srand (time (0));
 
 	int randgrape;
-	randgrape = rand() % 4;
 
 /**
  * Generate coordinates for Magic Waterfall
@@ -113,29 +100,46 @@ int main(int argc, char **argv)
 	rx = rand() % X;
 	ry = rand() % Y;
 
+	const unsigned short politician_total = X * Y / 6;
+
 /**
  * Initialize map
  */
 	unsigned short column,row;
 	int politicianCtr = 0;
 
+	map[rx][ry] = MagicWaterfall;
+
+	while (politicianCtr < politician_total)
+	{
+		int rand_x, rand_y;
+		rand_x = rand() % X;
+		rand_y = rand() % Y;
+
+		if (map[rand_x][rand_y] != politician &&
+				(map[rand_x][rand_y] != MagicWaterfall))
+		{
+			map [rand_x][rand_y] = politician;
+			politicianCtr++;
+		}
+	}
+
 	for (column = 0; column < X; column++)
 	{
 		for (row = 0; row < Y; row++)
 		{
-			if (rx != column || ry != row)
+			do
 			{
 				ObjAtCurrentPos = rand() % 8;
+			}while (ObjAtCurrentPos == politician);
 
-				if (ObjAtCurrentPos == politician)
-					politicianCtr++;
-
+			if (map[column][row] != politician &&
+					map[column][row] != MagicWaterfall)
 				map[column][row] = ObjAtCurrentPos;
-			}
-			else map[column][row] = MagicWaterfall;
 		}
 	}
 
+politicianCtr = politician_total;
 
 /**
  * Starting position
@@ -149,8 +153,6 @@ int main(int argc, char **argv)
 	short South = -1;
 
 	int indictedCtr = 0;
-
-	short c;
 
 	initscr();
 
@@ -176,6 +178,8 @@ int main(int argc, char **argv)
 	* from the ncurses library - needed for cursor key checking
 	*/
 	keypad(stdscr, TRUE);
+
+	short c;
 
 	while ( c != EOF && health > 0 && politicianCtr != indictedCtr && c != 'q')
 	{
@@ -278,14 +282,8 @@ int main(int argc, char **argv)
 			printw("\tGo in direction: e = East ; w = West ; n = North ; s = South\n");
 			printw("\t\t(Or use the left/right/up/down cursor keys\n");
 			printw("\ti = show inventory\n");
-			printw("\tm = display map\n");
 			printw("\tq = quit game\n");
 
-			flag = 1;
-			break;
-
-			case 'm':
-			showMap(Visited);
 			flag = 1;
 			break;
 
@@ -410,31 +408,37 @@ int main(int argc, char **argv)
 				{
 					printw("You plant a seed. You feel better. (+1 hp)\n");
 					seeds--;
-					t = rand() % 3;
+					t = rand() % 4;
 
+					if (t >= 0  && t < 3)
+					{
 					/**
 					 * map[x][y] will equal one of the items for the enum declaration
 					 * item 5-7
 					 */
-					map[x][y] = t + an_incriminating_document;
+						map[x][y] = t + an_incriminating_document;
+					}
+					else
+						map[x][y] = Grapevine;
 				}
 
-				if ( t == 1 && ! swords)
+				t = rand() % 4;
+				if ( t < 3 && !swords)
 				{
 					printw("You had no cover in the clearing and have been attacked by\n");
-					printw("%s. (-5 hp)\n\n", CREATURES[creature]);
-					health = health - 5;
+					printw("\n%s.\n\n(-%u HP)\n\n", creat[creature].name, creat[creature].strength);
+					health = health - creat[creature].strength;
 				}
-				else if (t == 1 && swords)
+				else if (t < 3 && swords)
 				{
 					printw("You had no cover in the clearing and have been attacked by\n");
-					printw("%s. Fortunately your sword\n", CREATURES[creature]);
+					printw("\n%s.\n\nFortunately your sword\n", creat[creature].name);
 					printw("protected you. That sword is now broken and you discard it.\n\n");
 					swords--;
 				}
-				else if (t == 1 && rings) {
+				else if (t < 3 && rings) {
 					printw("You had no cover in the clearing and have been attacked by\n");
-					printw("%s. Fortunately your Magic\n", CREATURES[creature]);
+					printw("\n%s.\n\nFortunately your Magic\n", creat[creature].name);
 					printw("Ring protected you. That ring is now broken and you discard it.\n\n");
 					rings--;
 				}
@@ -449,7 +453,7 @@ int main(int argc, char **argv)
 				}
 				else if ( ! t )
 				{
-					printw("A squirrel runs out of the tree, bites your ankle,\nand quickly disappears. (-1 hp)\n");
+					printw("A squirrel runs out of the tree,\nbites your ankle,\nand quickly disappears. (-1 hp)\n");
 					health--;
 				}
 				break;
@@ -461,12 +465,16 @@ int main(int argc, char **argv)
 				break;
 
 				case Grapevine:
+				randgrape = rand() % 4;
 				if (randgrape != 2)
+				{
 					printw("You eat a grape and feel better. (+1 hp)\n");
+					health++;
+				}
 				else
 				{
-					printw("The grapes have been poisoned and gave you a bad day. (-10 hp)\n");
-					health -= 10;
+					unsigned short hp_loss = (rand() % 10) + 1;
+					printw("The grapes have been poisoned\nand gave you a bad day. (-%u hp)\n", hp_loss);
 				}
 				break;
 
@@ -475,6 +483,7 @@ int main(int argc, char **argv)
 			}
 		}
 	prompt(politicianCtr, indictedCtr);
+	showMap(Visited);
 	refresh();
 	}
 

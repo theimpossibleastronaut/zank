@@ -52,9 +52,10 @@ bool accuse(void)
 	}
 	else
 	{
-		printw("A grand jury has found him innocent, but after being publicly disgraced,\n");
-		printw("he chooses early retirement\n");
-		printw("You're plagued with a guilty conscience. (-5 HP)\n");
+		printw("A grand jury has found him innocent,\n");
+		printw("but after the stress of the trial\n");
+		printw("he chooses early retirement.\n");
+		printw("\nYou're plagued with a guilty conscience. (-5 HP)\n");
 		health = health - 5;
 	}
 
@@ -159,15 +160,14 @@ void showMap(bool Visited[X][Y])
 {
 	int column, row;
 
-	for (column= X - 1; column >= 0; column--)
-	{
-		printw("\n");
+	short print_row = 2;
 
-		for (row=0; row<Y; row++)
+	for (column = X - 1; column >=0; column--)
+	{
+		mvprintw(print_row++, 64, "");
+
+		for (row = 0; row < Y; row++)
 		{
-			#if DEBUG==1
-				printw("%d", Visited[column][row]);
-			#endif
 			if (column == x && row == y)
 				printw("@");
 			else if (Visited[column][row] == 1)
@@ -188,12 +188,12 @@ void showMap(bool Visited[X][Y])
 		}
 	}
 
-	printw("\n");
+	/* printw("\n"); */
 }
 
 void prompt(short pCtr, short iCtr)
 {
-	printw("\n(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ",
+	mvprintw( 22, 0, "\n(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ",
 		y, x, pCtr - iCtr, health);
 }
 

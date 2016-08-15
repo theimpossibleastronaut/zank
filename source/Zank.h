@@ -40,14 +40,14 @@
  *  Define the grid size
  */
 
-#define X 9
-#define Y 9
+#define X 10
+#define Y 10
 
-#define VER "2016.08.02.01alpha"
-/* #define VER "testing" */
+/* #define VER "2016.08.02.01alpha" */
+#define VER "testing"
 #define AUTHOR "Andy Alt"
 
-/* #define OFF_MAP printw("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n"); health = health - 2; */
+#define CREATURE_COUNT 25
 
 int x,y;
 int map[X][Y];
@@ -57,6 +57,12 @@ int rings;
 int swords;
 int seeds;
 int health;
+
+struct creatures
+{
+	char *name;
+	unsigned short strength;
+};
 
 /**
 * NOTE: the order here must match with the objects listed in the
