@@ -24,17 +24,17 @@ q = quit
 When you are at position 0,0, you are at the bottom-left corner of the map.
 When you are at position 9,9, you are in the top-right corner.
 
-Inspiration for Zank came from games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix.
+Inspiration for Zank came from BBS Door games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix.
 
 Bugs, TODO, and Feature Requests
 https://github.com/andy5995/Zank/issues
 
 Forums
-https://sourceforge.net/p/zank/discussion/
+http://ost.io/@andy5995/Zank
 
 IRC: Quakenet IRC network - #Zank
 http://webchat.quakenet.org/?channels=Zank
 
 License: GNU GPL 3.0
 
-This file last updated 2016-07-31
+This file last updated 2016-09-11
