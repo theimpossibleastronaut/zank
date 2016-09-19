@@ -1,7 +1,7 @@
 /*
  * Zank.h
  *
- * Copyright 2012, 2016 Andy Alt <andyqwerty@users.sourceforge.net>
+ * Copyright 2012, 2016 Andy Alt <andy400-dev@yahoo.com>
  *
  * https://github.com/andy5995/Zank/wiki
  *
@@ -49,7 +49,7 @@
 
 #define CREATURE_COUNT 25
 
-int x,y;
+int x, y;
 int map[X][Y];
 
 int documents;
@@ -60,28 +60,29 @@ int health;
 
 struct creatures
 {
-	char *name;
-	unsigned short strength;
+  char *name;
+  unsigned short strength;
 };
 
 /**
 * NOTE: the order here must match with the objects listed in the
 * mapObjects[] declaration in main.c
 */
-enum {
-	Tree,
-	Lake,
-	Clearing,
-	politician,
-	Wall,
-	an_incriminating_document,
-	Sword,
-	Magic_Ring,
-	indicted_politician,
-	MagicWaterfall,
-	Dried_up_Waterfall,
-	Seed,
-	Grapevine
-	};
+enum
+{
+  Tree,
+  Lake,
+  Clearing,
+  politician,
+  Wall,
+  an_incriminating_document,
+  Sword,
+  Magic_Ring,
+  indicted_politician,
+  MagicWaterfall,
+  Dried_up_Waterfall,
+  Seed,
+  Grapevine
+};
 
 #endif
