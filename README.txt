@@ -38,3 +38,5 @@ http://webchat.quakenet.org/?channels=Zank
 License: GNU GPL 3.0
 
 This file last updated 2016-09-11
+
+Join the chat at https://gitter.im/Zank-dev/Lobby
