@@ -4,9 +4,6 @@ Zank home page: https://github.com/andy5995/Zank/wiki
 
 Dependencies: libncurses (make and cmake optional to build)
 
-The windows .exe file is in the win32/ folder of the Zank archive.
-It was built using MinGW on ReactOS 4.01 ( https://www.reactos.org/ ) and hasn't yet been fully tested.
-
 On Windows, to build with cmake and MinGW, go to
 /win32 in the Zank folder and type 'make'.
 
@@ -26,17 +23,9 @@ When you are at position 9,9, you are in the top-right corner.
 
 Inspiration for Zank came from BBS Door games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix.
 
-Bugs, TODO, and Feature Requests
-https://github.com/andy5995/Zank/issues
-
-Forums
-http://ost.io/@andy5995/Zank
-
-IRC: Quakenet IRC network - #Zank
-http://webchat.quakenet.org/?channels=Zank
-
 License: GNU GPL 3.0
 
-This file last updated 2016-09-11
-
 Join the chat at https://gitter.im/Zank-dev/Lobby
+
+
+This file last updated 2016-10-25
