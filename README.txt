@@ -1,6 +1,6 @@
 Text-based adventure game; can you find enough magic rings and incriminating documents to indict and retire all the politicians before your HP runs out?
 
-Zank home page: https://github.com/andy5995/Zank/wiki
+Zank home page: https://github.com/theimpossibleastronaut/Zank/wiki
 
 Dependencies: libncurses (make and cmake optional to build)
 
