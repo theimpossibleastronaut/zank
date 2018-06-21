@@ -2,6 +2,8 @@ Text-based adventure game; can you find enough magic rings and incriminating doc
 
 Zank home page: https://github.com/theimpossibleastronaut/Zank/wiki
 
+[screenshots](https://github.com/theimpossibleastronaut/Zank/tree/master/screenshots)
+
 Dependencies: libncurses (make and cmake optional to build)
 
 On Windows, to build with cmake and MinGW, go to
