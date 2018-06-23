@@ -37,10 +37,10 @@ main (int argc, char **argv)
 
   int ObjAtCurrentPos;
 
-        /**
-	 * NOTE: the order here must match with the object listed in the
-	 * enum declaration in Zank.h
-	 */
+  /**
+   * NOTE: the order here must match with the object listed in the
+   * enum declaration in Zank.h
+   */
   char *mapObject[] = {
     "a tree",
     "a lake",
@@ -167,9 +167,9 @@ main (int argc, char **argv)
      refresh(); */
 
   bool Visited[X][Y];
-        /**
-	 * Init Array
-	 */
+  /**
+   * Init Array
+   */
   for (column = 0; column < X; column++) {
     for (row = 0; row < Y; row++) {
       Visited[column][row] = 0;
@@ -178,9 +178,9 @@ main (int argc, char **argv)
 
   bool isStarting = 1;
 
-        /**
-	* from the ncurses library - needed for cursor key checking
-	*/
+ /**
+  * from the ncurses library - needed for cursor key checking
+  */
   keypad (stdscr, TRUE);
 
   short c = -999;
@@ -426,9 +426,9 @@ main (int argc, char **argv)
           if (t >= 0 && t < 3)
           {
                                         /**
-					 * map[x][y] will equal one of the items for the enum declaration
-					 * item 5-7
-					 */
+           * map[x][y] will equal one of the items for the enum declaration
+           * item 5-7
+           */
             map[x][y] = t + an_incriminating_document;
           }
           else
