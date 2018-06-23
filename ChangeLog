@@ -1,3 +1,7 @@
+2018-06-23
+
+Minor changes to cleanly compile on modern strict compilers.
+
 2016-08-14
 
 Different levels of strength is now assigned to different creatures

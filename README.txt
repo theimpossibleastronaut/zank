@@ -9,7 +9,7 @@ Dependencies: libncurses (make and cmake optional to build)
 On Windows, to build with cmake and MinGW, go to
 /win32 in the Zank folder and type 'make'.
 
-to build on Linux or Windows (if using MingGW)
+to build on Linux, MacOS, *BSD or Windows (if using MingGW)
 gcc -Wall main.c functions.c -lncurses -o Zank
 
 'make install' is not working yet.
@@ -30,4 +30,4 @@ License: GNU GPL 3.0
 Join the chat at https://gitter.im/Zank-dev/Lobby
 
 
-This file last updated 2016-10-25
+This file last updated 2018-06-23
