@@ -170,9 +170,11 @@ main (int argc, char **argv)
         /**
 	 * Init Array
 	 */
-  for (column = 0; column < X; column++)
-    for (row = 0; row < Y; row++)
+  for (column = 0; column < X; column++) {
+    for (row = 0; row < Y; row++) {
       Visited[column][row] = 0;
+    }
+  }
 
   bool isStarting = 1;
 
@@ -181,7 +183,7 @@ main (int argc, char **argv)
 	*/
   keypad (stdscr, TRUE);
 
-  short c;
+  short c = -999;
 
   while (c != EOF && health > 0 && politicianCtr != indictedCtr && c != 'q')
   {
@@ -360,7 +362,7 @@ main (int argc, char **argv)
         }
         else if (rings)
         {
-          if (accuse ());
+          if (accuse ())
           {
             rings--;
             indictedCtr++;
