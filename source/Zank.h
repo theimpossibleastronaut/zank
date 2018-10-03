@@ -35,9 +35,13 @@
 #include <ctype.h>
 
 /* On linux and mac, only <ncurses.h> is needed, but when using */
-/* MinGW on Windows, the the header can't be found unless this */
+/* MinGW on Windows, the header can't be found unless this */
 /* path is used */
-#include <ncurses/ncurses.h>
+#ifdef _WIN32
+  #include <ncurses/ncurses.h>
+#else
+  #include <ncurses.h>
+#endif
 
 #define DEBUG curses
 /**
