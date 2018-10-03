@@ -1,7 +1,4 @@
-CMakeFiles
-CMakeCache.txt
-*~
-*.cmake
-Makefile
+build
 Zank
+Zank.exe
 /Zank.geany
