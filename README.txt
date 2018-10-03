@@ -10,15 +10,25 @@ Zank home page: https://github.com/theimpossibleastronaut/Zank/wiki
 
 ## Dependencies:
 
-  * libncurses
+  * gcc
   * cmake
+  * ncurses-dev
 
 ## Compiling
+
+### Linux and Mac
 
     mkdir build
     cd build
     cmake ../source
     make
+    
+### Windows
+
+    mkdir build
+    cd build
+    cmake -G "MinGW Makefiles" ..\source
+    mingw32-make
 
 The Zank executable will be output to your build directory.
 
