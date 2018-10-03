@@ -1,16 +1,26 @@
-Text-based adventure game; can you find enough magic rings and incriminating documents to indict and retire all the politicians before your HP runs out?
+# Zank
+
+Text-based adventure game; can you find enough magic rings and
+incriminating documents to indict and retire all the politicians before
+your HP runs out?
 
 Zank home page: https://github.com/theimpossibleastronaut/Zank/wiki
 
 [screenshots](https://github.com/theimpossibleastronaut/Zank/tree/master/screenshots)
 
-Dependencies: libncurses (make and cmake optional to build)
+## Dependencies:
 
-On Windows, to build with cmake and MinGW, go to
-/win32 in the Zank folder and type 'make'.
+  * libncurses
+  * cmake
 
-to build on Linux, MacOS, *BSD or Windows (if using MingGW)
-gcc -Wall main.c functions.c -lncurses -o Zank
+## Compiling
+
+    mkdir build
+    cd build
+    cmake ../source
+    make
+
+The Zank executable will be output to your build directory.
 
 'make install' is not working yet.
 
@@ -23,11 +33,12 @@ q = quit
 When you are at position 0,0, you are at the bottom-left corner of the map.
 When you are at position 9,9, you are in the top-right corner.
 
-Inspiration for Zank came from BBS Door games such as Zork, Legend of the Red Dragon (L.O.R.D.), and Lunatix.
+Inspiration for Zank came from BBS Door games such as Zork, Legend of
+the Red Dragon (L.O.R.D.), and Lunatix.
 
 License: GNU GPL 3.0
 
 Join the chat at https://gitter.im/Zank-dev/Lobby
 
 
-This file last updated 2018-06-23
+This file last updated 2018-10-02
