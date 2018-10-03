@@ -33,7 +33,11 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include <ncurses.h>
+
+/* On linux and mac, only <ncurses.h> is needed, but when using */
+/* MinGW on Windows, the the header can't be found unless this */
+/* path is used */
+#include <ncurses/ncurses.h>
 
 #define DEBUG curses
 /**
