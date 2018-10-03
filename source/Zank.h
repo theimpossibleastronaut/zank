@@ -1,9 +1,9 @@
 /*
  * Zank.h
  *
- * Copyright 2012, 2016 Andy Alt <andy400-dev@yahoo.com>
+ * Copyright 2012-2018 Andy Alt <andy400-dev@yahoo.com>
  *
- * https://github.com/andy5995/Zank/wiki
+ * https://github.com/theimpossibleastronaut/Zank/wiki
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define Y 10
 
 /* #define VER "2016.08.02.01alpha" */
-#define VER "testing"
+#define VER "0.0.5-dev"
 #define AUTHOR "Andy Alt"
 
 #define CREATURE_COUNT 25

@@ -1,9 +1,9 @@
 /*
  * main.c
  *
- * Copyright 2012, 2016 Andy Alt <andy400-dev@yahoo.com>
+ * Copyright 2012-2018 Andy Alt <andy400-dev@yahoo.com>
  *
- * https://github.com/andy5995/Zank/wiki
+ * https://github.com/theimpossibleastronaut/Zank/wiki
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
