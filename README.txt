@@ -22,7 +22,7 @@ Zank home page: https://github.com/theimpossibleastronaut/Zank/wiki
     cd build
     cmake ../source
     make
-    
+
 ### Windows
 
     mkdir build
@@ -48,7 +48,7 @@ the Red Dragon (L.O.R.D.), and Lunatix.
 
 License: GNU GPL 3.0
 
-Join the chat at https://gitter.im/Zank-dev/Lobby
+Join the chat at https://matrix.to/#/!fxFvxhBDUCswKqaLYb:matrix.org
 
 
-This file last updated 2018-10-02
+This file last updated 2018-11-10
