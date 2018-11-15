@@ -23,12 +23,40 @@
  *
  */
 
+#include <getopt.h>
 #include "main.h"
 #include "function_prototypes.h"
 
 int
 main (int argc, char **argv)
 {
+  const char *const short_options = "hv";
+
+  const struct option long_options[] = {
+    {"help", 0, NULL, 'h'},
+    {"version", 0, NULL, 'v'},
+    {NULL, 0, NULL, 0}
+  };
+
+  int next_option = 0;
+
+  do
+  {
+    next_option = getopt_long (argc, argv, short_options, long_options, NULL);
+
+    switch ((char)next_option)
+    {
+      case 'h':                /* -h */
+        display_help ();
+        return 0;
+      case 'v':
+        display_version ();
+        return 0;
+      default:
+        break;
+    }
+  } while (next_option != -1);
+
   documents = 0;
   rings = 0;
   swords = 0;
@@ -167,7 +195,7 @@ main (int argc, char **argv)
 
   initscr ();
 
-  printw ("\nZank version %s\n", VER);
+  printw ("\nZank version %s\n", VERSION);
   printw ("By %s\n", AUTHOR);
   printw ("With code contributions from mzdelong\n");
   refresh ();

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 SET(ProjectName Zank)
 
 SET(BIN_OUTPUT ${ProjectName})
-add_executable (${BIN_OUTPUT} main.c functions.c)
+add_executable (${BIN_OUTPUT} main.c functions.c usage.c)
 
 message(STATUS "Searching for curses")
 include(FindCurses)

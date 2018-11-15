@@ -51,8 +51,8 @@
 #define X 10
 #define Y 10
 
-/* #define VER "2016.08.02.01alpha" */
-#define VER "0.0.6-dev"
+#define PACKAGE "Zank"
+#define VERSION "0.0.6-dev"
 #define AUTHOR "Andy Alt"
 
 int x, y;
