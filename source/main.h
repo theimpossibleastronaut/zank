@@ -27,3 +27,11 @@
 #include "Zank.h"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
+
+typedef struct creature creature;
+
+struct creature {
+  const char *name;
+  const int strength;
+};
+

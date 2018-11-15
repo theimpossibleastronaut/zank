@@ -69,7 +69,7 @@ struct objects {
   int seeds;
 
   int pos;
-}object;
+};
 
 
 /**
