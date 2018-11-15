@@ -52,10 +52,8 @@
 #define Y 10
 
 /* #define VER "2016.08.02.01alpha" */
-#define VER "0.0.5-dev"
+#define VER "0.0.6-dev"
 #define AUTHOR "Andy Alt"
-
-#define CREATURE_COUNT 25
 
 int x, y;
 int map[X][Y];
@@ -65,12 +63,6 @@ int rings;
 int swords;
 int seeds;
 int health;
-
-struct creatures
-{
-  char *name;
-  unsigned short strength;
-};
 
 /**
 * NOTE: the order here must match with the objects listed in the

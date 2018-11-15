@@ -57,7 +57,14 @@ main (int argc, char **argv)
     "a grapevine"
   };
 
-  struct creatures creat[CREATURE_COUNT] = {
+  typedef struct creature creature;
+
+  struct creature {
+    const char *name;
+    const int strength;
+  };
+
+  creature creatures[] = {
 
     {"an evil gorilla", 6},
     {"a deranged vulture", 5},
@@ -86,7 +93,9 @@ main (int argc, char **argv)
     {"hallucinations", 6}
   };
 
-  int creature;
+  int creature_count = ARRAY_SIZE(creatures);
+
+  int which_creature;
 
   bool flag = 0;
 
@@ -416,7 +425,7 @@ main (int argc, char **argv)
         break;
 
       case Clearing:
-        creature = rand () % CREATURE_COUNT;
+        which_creature = rand () % creature_count;
         if (seeds)
         {
           printw ("You plant a seed. You feel better. (+1 hp)\n");
@@ -440,15 +449,15 @@ main (int argc, char **argv)
         {
           printw
             ("You had no cover in the clearing and have been attacked by\n");
-          printw ("\n%s.\n\n(-%u HP)\n\n", creat[creature].name,
-                  creat[creature].strength);
-          health = health - creat[creature].strength;
+          printw ("\n%s.\n\n(-%u HP)\n\n", creatures[which_creature].name,
+                  creatures[which_creature].strength);
+          health = health - creatures[which_creature].strength;
         }
         else if (t < 3 && swords)
         {
           printw
             ("You had no cover in the clearing and have been attacked by\n");
-          printw ("\n%s.\n\nFortunately your sword\n", creat[creature].name);
+          printw ("\n%s.\n\nFortunately your sword\n", creatures[which_creature].name);
           printw
             ("protected you. That sword is now broken and you discard it.\n\n");
           swords--;
@@ -457,7 +466,7 @@ main (int argc, char **argv)
         {
           printw
             ("You had no cover in the clearing and have been attacked by\n");
-          printw ("\n%s.\n\nFortunately your Magic\n", creat[creature].name);
+          printw ("\n%s.\n\nFortunately your Magic\n", creatures[which_creature].name);
           printw
             ("Ring protected you. That ring is now broken and you discard it.\n\n");
           rings--;
