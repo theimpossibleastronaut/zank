@@ -66,16 +66,16 @@ accuse (void)
 }
 
 void
-showitems (void)
+showitems (objects *object)
 {
 
   printw ("Your inventory:\n");
-  if (swords || documents || rings || seeds)
+  if (object->swords || object->documents || object->rings || object->seeds)
   {
-    printw ("Swords: %d\n", swords);
-    printw ("Incriminating Documents: %d\n", documents);
-    printw ("Magic Rings: %d\n", rings);
-    printw ("Seeds: %d\n", seeds);
+    printw ("Swords: %d\n", object->swords);
+    printw ("Incriminating Documents: %d\n", object->documents);
+    printw ("Magic Rings: %d\n", object->rings);
+    printw ("Seeds: %d\n", object->seeds);
   }
 
   else

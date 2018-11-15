@@ -58,11 +58,19 @@
 int x, y;
 int map[X][Y];
 
-int documents;
-int rings;
-int swords;
-int seeds;
 int health;
+
+typedef struct objects objects;
+
+struct objects {
+  int documents;
+  int rings;
+  int swords;
+  int seeds;
+
+  int pos;
+}object;
+
 
 /**
 * NOTE: the order here must match with the objects listed in the
