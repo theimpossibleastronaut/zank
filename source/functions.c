@@ -66,7 +66,7 @@ accuse (void)
 }
 
 void
-showitems (objects *object)
+showitems (objects * object)
 {
 
   printw ("Your inventory:\n");
