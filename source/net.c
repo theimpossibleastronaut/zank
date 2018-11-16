@@ -8,6 +8,13 @@
 
 #define BUF_SIZE 500
 
+/*
+ * Later this will be passed from the command line
+ *
+ */
+#define STR_PORT_NUM "7001"
+#define STR_HOST "127.0.0.1"
+
 void
 run_server (void)
 {
@@ -28,10 +35,10 @@ run_server (void)
   hints.ai_addr = NULL;
   hints.ai_next = NULL;
 
-  s = getaddrinfo (NULL, "7001", &hints, &result);
+  s = getaddrinfo (NULL, STR_PORT_NUM, &hints, &result);
   if (s != 0)
   {
-    fprintf (stderr, "getaddrinfo: %s\n", gai_strerror(s));
+    fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
     exit (EXIT_FAILURE);
   }
 
@@ -55,25 +62,98 @@ run_server (void)
 
   freeaddrinfo (result);
 
-  for (;;) {
+  for (;;)
+  {
     peer_addr_len = sizeof (struct sockaddr_storage);
-    nread = recvfrom (sfd, buf, BUF_SIZE, 0, (struct sockaddr *) &peer_addr, &peer_addr_len);
+    nread =
+      recvfrom (sfd, buf, BUF_SIZE, 0, (struct sockaddr *) &peer_addr,
+                &peer_addr_len);
     if (nread == -1)
       continue;
 
-  char host[NI_MAXHOST], service[NI_MAXSERV];
+    char host[NI_MAXHOST], service[NI_MAXSERV];
 
-  s = getnameinfo ((struct sockaddr *) &peer_addr,
-                  peer_addr_len, host, NI_MAXHOST,
-                  service, NI_MAXSERV, NI_NUMERICSERV);
+    s = getnameinfo ((struct sockaddr *) &peer_addr,
+                     peer_addr_len, host, NI_MAXHOST,
+                     service, NI_MAXSERV, NI_NUMERICSERV);
 
-  if (s == 0)
-    printf ("Received %zd bytes from %s:%s\n", nread, host, service);
-  else
-    fprintf (stderr, "getnameinfo: %s\n", gai_strerror (s));
+    if (s == 0)
+      printf ("Received %zd bytes from %s:%s\n", nread, host, service);
+    else
+      fprintf (stderr, "getnameinfo: %s\n", gai_strerror (s));
 
-  if  (sendto (sfd, buf, nread, 0, (struct sockaddr *)
-      &peer_addr, peer_addr_len) != nread)
-    fprintf (stderr, "Error sending response\n");
+    if (sendto (sfd, buf, nread, 0, (struct sockaddr *)
+                &peer_addr, peer_addr_len) != nread)
+      fprintf (stderr, "Error sending response\n");
   }
+}
+
+void
+zank_connect (char *const *argv)
+{
+  struct addrinfo hints;
+  struct addrinfo *result, *rp;
+  int sfd, s, j;
+  size_t len;
+  ssize_t nread;
+  char buf[BUF_SIZE];
+
+  /* Obtain address(es) matching host/port */
+
+  memset (&hints, 0, sizeof (struct addrinfo));
+  hints.ai_family = AF_UNSPEC;  /* Allow IPv4 or IPv6 */
+  hints.ai_socktype = SOCK_DGRAM;       /* Datagram socket */
+  hints.ai_flags = 0;
+  hints.ai_protocol = 0;        /* Any protocol */
+
+  s = getaddrinfo (STR_HOST, STR_PORT_NUM, &hints, &result);
+  if (s != 0)
+  {
+    fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
+    exit (EXIT_FAILURE);
+  }
+
+  /* getaddrinfo() returns a list of address structures.
+     Try each address until we successfully connect(2).
+     If socket(2) (or connect(2)) fails, we (close the socket
+     and) try the next address. */
+
+  for (rp = result; rp != NULL; rp = rp->ai_next)
+  {
+    sfd = socket (rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+    if (sfd == -1)
+      continue;
+
+    if (connect (sfd, rp->ai_addr, rp->ai_addrlen) != -1)
+      break;                    /* Success */
+
+    close (sfd);
+  }
+
+  if (rp == NULL)
+  {                             /* No address succeeded */
+    fprintf (stderr, "Could not connect\n");
+    exit (EXIT_FAILURE);
+  }
+
+  freeaddrinfo (result);        /* No longer needed */
+
+  char test_string[] = "Hello, World";
+  len = strlen (test_string) + 1;
+  if (write (sfd, test_string, len) != len)
+  {
+    fprintf (stderr, "partial/failed write\n");
+    exit (EXIT_FAILURE);
+  }
+
+  nread = read (sfd, buf, BUF_SIZE);
+  if (nread == -1)
+  {
+    perror ("read");
+    exit (EXIT_FAILURE);
+  }
+
+  printf ("Received %zd bytes: %s\n", nread, buf);
+
+  exit (EXIT_SUCCESS);
 }

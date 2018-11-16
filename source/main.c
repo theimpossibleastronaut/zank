@@ -30,11 +30,12 @@
 #include "net.h"
 
 int
-main (int argc, char **argv)
+main (int argc, char* const *argv)
 {
-  const char *const short_options = "shv";
+  const char *const short_options = "cshv";
 
   const struct option long_options[] = {
+    {"connect", 0, NULL, 'c'},
     {"server", 0, NULL, 's'},
     {"help", 0, NULL, 'h'},
     {"version", 0, NULL, 'v'},
@@ -49,6 +50,9 @@ main (int argc, char **argv)
 
     switch ((char)next_option)
     {
+      case 'c':
+        zank_connect (argv);
+        exit (0);
       case 's':
         run_server ();
         exit (0);

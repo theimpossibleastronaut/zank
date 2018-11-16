@@ -35,6 +35,7 @@ void display_version (void)
 void display_help (void)
 {
   printf ("\
+  -c  --connect         (not yet implemented)\n\
   -s, --server          (not yet implemented)\n\
   -h, --help\n\
   -v, --version\n\
