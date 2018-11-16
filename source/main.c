@@ -25,7 +25,7 @@
 
 #include <getopt.h>
 #include "main.h"
-#include "function_prototypes.h"
+#include "functions.h"
 #include "usage.h"
 
 int
@@ -313,7 +313,7 @@ main (int argc, char **argv)
       break;
 
     case 'i':
-      showitems ();
+      showitems (object);
       flag = 1;
       break;
 
@@ -548,7 +548,7 @@ main (int argc, char **argv)
           politicianCtr, indictedCtr);
   printw ("Your health is %d\n\n", health);
 
-  showitems ();
+  showitems (object);
 
   printw ("\nEnter 'x' to exit\n");
   refresh ();

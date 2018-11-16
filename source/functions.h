@@ -25,3 +25,12 @@
 
 
 #include "Zank.h"
+
+bool accuse(void);
+void showitems(objects *object);
+void tree(void);
+void wall(void);
+void lake(void);
+void showMap(bool Visited[X][Y]);
+void prompt(short pCtr, short iCtr);
+bool borderPatrol(void);
