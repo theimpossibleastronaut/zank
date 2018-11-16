@@ -27,13 +27,15 @@
 #include "main.h"
 #include "functions.h"
 #include "usage.h"
+#include "net.h"
 
 int
 main (int argc, char **argv)
 {
-  const char *const short_options = "hv";
+  const char *const short_options = "shv";
 
   const struct option long_options[] = {
+    {"server", 0, NULL, 's'},
     {"help", 0, NULL, 'h'},
     {"version", 0, NULL, 'v'},
     {NULL, 0, NULL, 0}
@@ -47,6 +49,9 @@ main (int argc, char **argv)
 
     switch ((char)next_option)
     {
+      case 's':
+        run_server ();
+        exit (0);
       case 'h':                /* -h */
         display_help ();
         return 0;
