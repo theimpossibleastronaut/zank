@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 SET(ProjectName Zank)
 
 SET(BIN_OUTPUT ${ProjectName})
-set(CMAKE_CC_FLAGS "-Wall")
+set(CMAKE_C_FLAGS "-Wall")
+set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 add_executable (${BIN_OUTPUT} main.c functions.c usage.c net.c utils.c)
 
 message(STATUS "Searching for curses")
