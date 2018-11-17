@@ -47,10 +47,12 @@ bool is_server = 0;
 int
 main (int argc, char* const *argv)
 {
-  const char *const short_options = "cshv";
+  char *zank_host = NULL;
+
+  const char *const short_options = "c:shv";
 
   const struct option long_options[] = {
-    {"connect", 0, NULL, 'c'},
+    {"connect", 1, NULL, 'c'},
     {"server", 0, NULL, 's'},
     {"help", 0, NULL, 'h'},
     {"version", 0, NULL, 'v'},
@@ -66,7 +68,8 @@ main (int argc, char* const *argv)
     switch ((char)next_option)
     {
       case 'c':
-        sfd = zank_connect (argv);
+        zank_host = optarg;
+        sfd = zank_connect (argv, zank_host);
         is_client = 1;
         break;
       case 's':

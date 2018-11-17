@@ -1,2 +1,2 @@
 void run_server (st_player_data *player);
-int zank_connect (char* const *argv);
+int zank_connect (char* const *argv, const char *zank_host);

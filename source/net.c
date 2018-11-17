@@ -16,7 +16,6 @@
  *
  */
 #define STR_PORT_NUM "7001"
-#define STR_HOST "127.0.0.1"
 
 void
 run_server (st_player_data *player)
@@ -113,7 +112,7 @@ run_server (st_player_data *player)
 }
 
 int
-zank_connect (char *const *argv)
+zank_connect (char *const *argv, const char *zank_host)
 {
   struct addrinfo hints;
   struct addrinfo *result, *rp;
@@ -130,7 +129,7 @@ zank_connect (char *const *argv)
   hints.ai_flags = 0;
   hints.ai_protocol = 0;        /* Any protocol */
 
-  s = getaddrinfo (STR_HOST, STR_PORT_NUM, &hints, &result);
+  s = getaddrinfo (zank_host, STR_PORT_NUM, &hints, &result);
   if (s != 0)
   {
     fprintf (stderr, "getaddrinfo: %s\n", gai_strerror (s));
