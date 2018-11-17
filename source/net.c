@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "Zank.h"
+#include "utils.h"
+
 #define BUF_SIZE 500
 
 /*
@@ -16,7 +19,7 @@
 #define STR_HOST "127.0.0.1"
 
 void
-run_server (void)
+run_server (st_player_data *player)
 {
   struct addrinfo hints;
   struct addrinfo *result, *rp;
@@ -78,7 +81,28 @@ run_server (void)
                      service, NI_MAXSERV, NI_NUMERICSERV);
 
     if (s == 0)
-      printf ("Received %zd bytes from %s:%s\n", nread, host, service);
+    {
+      printf ("incoming string: %s\n", buf);
+
+      char *comma_ptr;
+      if (*buf == 'y')
+      {
+        comma_ptr = strchr (buf, ',');
+        del_char_shift_left (',', &comma_ptr);
+        player->pos_y = atoi (comma_ptr);
+      }
+
+      else if (*buf == 'x')
+      {
+        comma_ptr = strchr (buf, ',');
+        del_char_shift_left (',', &comma_ptr);
+        player->pos_x = atoi (comma_ptr);
+      }
+
+      printf ("Player position is %d,%d\n", player->pos_y, player->pos_x);
+
+      printf ("Received %zd bytes from %s:%s\n\n", nread, host, service);
+    }
     else
       fprintf (stderr, "getnameinfo: %s\n", gai_strerror (s));
 

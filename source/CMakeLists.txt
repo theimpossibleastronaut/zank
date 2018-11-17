@@ -4,7 +4,7 @@ SET(ProjectName Zank)
 
 SET(BIN_OUTPUT ${ProjectName})
 set(CMAKE_CC_FLAGS "-Wall")
-add_executable (${BIN_OUTPUT} main.c functions.c usage.c net.c)
+add_executable (${BIN_OUTPUT} main.c functions.c usage.c net.c utils.c)
 
 message(STATUS "Searching for curses")
 include(FindCurses)

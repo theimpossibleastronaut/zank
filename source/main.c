@@ -36,13 +36,17 @@ st_direction direction[] = {
   { "South", -1 }
 };
 
+/*
+ *  socket file descriptor for network communication
+ */
+int sfd = 0;
+
+bool is_client = 0;
+bool is_server = 0;
+
 int
 main (int argc, char* const *argv)
 {
-  int sfd;
-  bool is_client = 0;
-  bool is_server = 0;
-
   const char *const short_options = "cshv";
 
   const struct option long_options[] = {
@@ -66,8 +70,8 @@ main (int argc, char* const *argv)
         is_client = 1;
         break;
       case 's':
-        run_server ();
-        exit (0);
+        is_server = 1;
+        break;
       case 'h':                /* -h */
         display_help ();
         return 0;
@@ -78,6 +82,24 @@ main (int argc, char* const *argv)
         break;
     }
   } while (next_option != -1);
+
+  if (is_server && is_client)
+  {
+    fprintf (stderr, "Zank cannot be a client and server.\n");
+    exit (1);
+  }
+
+  st_player_data player;
+
+  player.health = 100;
+/**
+ * Starting position
+ */
+  player.pos_x = X / 2;
+  player.pos_y = Y / 2;
+
+  if (is_server)
+    run_server (&player);
 
   /**
    * NOTE: the order here must match with the object listed in the
@@ -193,15 +215,6 @@ main (int argc, char* const *argv)
   }
 
   politicianCtr = politician_total;
-
-  st_player_data player;
-
-  player.health = 100;
-/**
- * Starting position
- */
-  player.pos_x = X / 2;
-  player.pos_y = Y / 2;
 
   int indictedCtr = 0;
 

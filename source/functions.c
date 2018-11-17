@@ -23,7 +23,9 @@
  *
  */
 
+#include <unistd.h>
 #include "functions.h"
+#include "utils.h"
 
 bool
 accuse (st_player_data *player)
@@ -205,17 +207,52 @@ borderPatrol (st_player_data *player)
 void change_pos(st_player_data *player, const char c, int which)
 {
   extern const st_direction direction[];
+  extern const int sfd;
+  extern const bool is_client;
+  char buf[1024];
+  char str_pos[4];
   switch (c)
   {
     case 'y':
       player->pos_y = player->pos_y + direction[which].offset;
+      if (is_client)
+      {
+        itoa (player->pos_y, str_pos);
+        int len = snprintf (buf, 1024, "%c,%s", 'y', str_pos);
+        len++;
+        if (write (sfd, buf, len) != len)
+        {
+          fprintf (stderr, "partial/failed write\n");
+          exit (EXIT_FAILURE);
+        }
+      }
       break;
     case 'x':
       player->pos_x = player->pos_x + direction[which].offset;
+      if (is_client)
+      {
+        itoa (player->pos_x, str_pos);
+        int len = snprintf (buf, 1024, "%c,%s", 'x', str_pos);
+        len++;
+        if (write (sfd, buf, len) != len)
+        {
+          fprintf (stderr, "partial/failed write\n");
+          exit (EXIT_FAILURE);
+        }
+      }
       break;
     default:
       break;
   }
+
+  /*
+  len = strlen (test_string) + 1;
+  if (write (sfd, test_string, len) != len)
+  {
+    fprintf (stderr, "partial/failed write\n");
+    exit (EXIT_FAILURE);
+  } */
+
 
   printw ("%s\n", direction[which].str_which);
 
