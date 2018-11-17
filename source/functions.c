@@ -26,9 +26,9 @@
 #include "functions.h"
 
 bool
-accuse (void)
+accuse (st_player_data *player)
 {
-  if (map[x][y] == indicted_politician)
+  if (map[player->pos_x][player->pos_y] == indicted_politician)
   {
     printw ("This politician has been indicted recently.\n");
     return 0;
@@ -42,14 +42,14 @@ accuse (void)
   {
     printw ("A grand jury has found him guilty.\n");
     printw ("You feel better. (+5 hp)\n\n");
-    health = health + 5;
+    player->health = player->health + 5;
     t = rand () % 3;
 
     if (!t)
     {
       printw
         ("You have been blackmailed by an ally of the politican! (-5 hp)\n");
-      health = health - 5;
+      player->health = player->health - 5;
     }
   }
   else
@@ -58,10 +58,10 @@ accuse (void)
     printw ("but after the stress of the trial\n");
     printw ("he chooses early retirement.\n");
     printw ("\nYou're plagued with a guilty conscience. (-5 HP)\n");
-    health = health - 5;
+    player->health = player->health - 5;
   }
 
-  map[x][y] = indicted_politician;
+  map[player->pos_x][player->pos_y] = indicted_politician;
   return 1;
 }
 
@@ -166,7 +166,7 @@ lake (void)
 }
 
 void
-showMap (bool Visited[X][Y])
+showMap (st_player_data *player, bool Visited[X][Y])
 {
   int column, row;
 
@@ -178,7 +178,7 @@ showMap (bool Visited[X][Y])
 
     for (row = 0; row < Y; row++)
     {
-      if (column == x && row == y)
+      if (column == player->pos_x && row == player->pos_y)
         printw ("@");
       else if (Visited[column][row] == 1)
       {
@@ -202,18 +202,18 @@ showMap (bool Visited[X][Y])
 }
 
 void
-prompt (short pCtr, short iCtr)
+prompt (st_player_data *player, short pCtr, short iCtr)
 {
   mvprintw (22, 0,
             "\n(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ",
-            y, x, pCtr - iCtr, health);
+            player->pos_y, player->pos_x, pCtr - iCtr, player->health);
 }
 
 bool
-borderPatrol (void)
+borderPatrol (st_player_data *player)
 {
   printw
     ("\nYou were attacked while trying to invade the neighboring kingdom (-2 hp)\n");
-  health = health - 2;
+  player->health = player->health - 2;
   return 1;
 }

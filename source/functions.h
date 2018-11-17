@@ -26,11 +26,11 @@
 
 #include "Zank.h"
 
-bool accuse (void);
+bool accuse (st_player_data *player);
 void showitems (objects * object);
 void tree (void);
 void wall (void);
 void lake (void);
-void showMap (bool Visited[X][Y]);
-void prompt (short pCtr, short iCtr);
-bool borderPatrol (void);
+void showMap (st_player_data *player, bool Visited[X][Y]);
+void prompt (st_player_data *player, short pCtr, short iCtr);
+bool borderPatrol (st_player_data *player);

@@ -55,13 +55,16 @@
 #define VERSION "0.0.6-dev"
 #define AUTHOR "Andy Alt"
 
-int x, y;
 int map[X][Y];
 
-int health;
+typedef struct st_player_data st_player_data;
+struct st_player_data {
+  int health;
+  int pos_x;
+  int pos_y;
+};
 
 typedef struct objects objects;
-
 struct objects {
   int documents;
   int rings;
@@ -70,7 +73,6 @@ struct objects {
 
   int pos;
 };
-
 
 /**
 * NOTE: the order here must match with the objects listed in the
