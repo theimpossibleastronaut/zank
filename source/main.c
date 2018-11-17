@@ -29,9 +29,20 @@
 #include "usage.h"
 #include "net.h"
 
+st_direction direction[] = {
+  { "West", -1 },
+  { "East", 1 },
+  { "North", 1 },
+  { "South", -1 }
+};
+
 int
 main (int argc, char* const *argv)
 {
+  int sfd;
+  bool is_client = 0;
+  bool is_server = 0;
+
   const char *const short_options = "cshv";
 
   const struct option long_options[] = {
@@ -51,8 +62,9 @@ main (int argc, char* const *argv)
     switch ((char)next_option)
     {
       case 'c':
-        zank_connect (argv);
-        exit (0);
+        sfd = zank_connect (argv);
+        is_client = 1;
+        break;
       case 's':
         run_server ();
         exit (0);
@@ -191,11 +203,6 @@ main (int argc, char* const *argv)
   player.pos_x = X / 2;
   player.pos_y = Y / 2;
 
-  short West = -1;
-  short East = 1;
-  short North = 1;
-  short South = -1;
-
   int indictedCtr = 0;
 
   initscr ();
@@ -274,50 +281,30 @@ main (int argc, char* const *argv)
     {
     case 'e':
       if (player.pos_y < Y - 1)
-      {
-        player.pos_y = player.pos_y + East;
-        printw ("East\n");
-      }
+        change_pos(&player, 'y', EAST);
       else
-      {
         flag = borderPatrol (&player);
-      }
       break;
 
     case 'w':
       if (player.pos_y > 0)
-      {
-        player.pos_y = player.pos_y + West;
-        printw ("West\n");
-      }
+        change_pos(&player, 'y', WEST);
       else
-      {
         flag = borderPatrol (&player);
-      }
       break;
 
     case 's':
       if (player.pos_x > 0)
-      {
-        player.pos_x = player.pos_x + South;
-        printw ("South\n");
-      }
+        change_pos (&player, 'x', SOUTH);
       else
-      {
         flag = borderPatrol (&player);
-      }
       break;
 
     case 'n':
       if (player.pos_x < X - 1)
-      {
-        player.pos_x = player.pos_x + North;
-        printw ("North\n");
-      }
+        change_pos (&player, 'x', NORTH);
       else
-      {
         flag = borderPatrol (&player);
-      }
       break;
 
     case 'i':
@@ -383,7 +370,6 @@ main (int argc, char* const *argv)
       }
 
       printw ("\n");
-
 
       switch (object->pos)
       {
@@ -568,6 +554,4 @@ main (int argc, char* const *argv)
   free (object);
 
   return 0;
-
-
 }

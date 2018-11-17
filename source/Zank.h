@@ -57,6 +57,19 @@
 
 int map[X][Y];
 
+enum {
+  WEST,
+  EAST,
+  NORTH,
+  SOUTH,
+};
+
+typedef struct st_direction st_direction;
+struct st_direction {
+  char *str_which;
+  int offset;
+};
+
 typedef struct st_player_data st_player_data;
 struct st_player_data {
   int health;

@@ -85,20 +85,6 @@ showitems (objects * object)
 
 }
 
-/* void showpoliticians(int foundpolitician) {
-
-	int i;
-	printw("\nLocations of politicians:\n");
-	printw("%3c %3c\n",'x', 'y');
-	printw("-------------------\n");
-	for (i = 0; i < foundpolitician; i++)
-		printw("%3d %3d\n", locations[i][0], locations[i][1]);
-
-	printw("--- Retired ---\n");
-	for (i = 0; i < retiredPoliticians; i++)
-		printw("%3d %3d\n", locOfRetiredPoliticians[i][0], locOfRetiredPoliticians[i][1]);
-} */
-
 void
 tree (void)
 {
@@ -197,8 +183,6 @@ showMap (st_player_data *player, bool Visited[X][Y])
         printw ("*");
     }
   }
-
-  /* printw("\n"); */
 }
 
 void
@@ -217,3 +201,25 @@ borderPatrol (st_player_data *player)
   player->health = player->health - 2;
   return 1;
 }
+
+void change_pos(st_player_data *player, const char c, int which)
+{
+  extern const st_direction direction[];
+  switch (c)
+  {
+    case 'y':
+      player->pos_y = player->pos_y + direction[which].offset;
+      break;
+    case 'x':
+      player->pos_x = player->pos_x + direction[which].offset;
+      break;
+    default:
+      break;
+  }
+
+  printw ("%s\n", direction[which].str_which);
+
+  return;
+}
+
+

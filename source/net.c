@@ -88,7 +88,7 @@ run_server (void)
   }
 }
 
-void
+int
 zank_connect (char *const *argv)
 {
   struct addrinfo hints;
@@ -137,6 +137,7 @@ zank_connect (char *const *argv)
   }
 
   freeaddrinfo (result);        /* No longer needed */
+  return sfd;
 
   char test_string[] = "Hello, World";
   len = strlen (test_string) + 1;
