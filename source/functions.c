@@ -210,39 +210,31 @@ void change_pos(st_player_data *player, const char c, int which)
   extern const int sfd;
   extern const bool is_client;
   char buf[1024];
-  char str_pos[4];
   switch (c)
   {
     case 'y':
       player->pos_y = player->pos_y + direction[which].offset;
-      if (is_client)
-      {
-        itoa (player->pos_y, str_pos);
-        int len = snprintf (buf, 1024, "%c,%s", 'y', str_pos);
-        len++;
-        if (write (sfd, buf, len) != len)
-        {
-          fprintf (stderr, "partial/failed write\n");
-          exit (EXIT_FAILURE);
-        }
-      }
       break;
     case 'x':
       player->pos_x = player->pos_x + direction[which].offset;
-      if (is_client)
-      {
-        itoa (player->pos_x, str_pos);
-        int len = snprintf (buf, 1024, "%c,%s", 'x', str_pos);
-        len++;
-        if (write (sfd, buf, len) != len)
-        {
-          fprintf (stderr, "partial/failed write\n");
-          exit (EXIT_FAILURE);
-        }
-      }
       break;
     default:
       break;
+  }
+
+  if (is_client)
+  {
+    char y_str_pos[4];
+    char x_str_pos[4];
+    itoa (player->pos_y, y_str_pos);
+    itoa (player->pos_x, x_str_pos);
+    int len = snprintf (buf, BUF_SIZE, "pos = %s,%s", y_str_pos, x_str_pos);
+    len++;
+    if (write (sfd, buf, len) != len)
+    {
+      fprintf (stderr, "partial/failed write\n");
+      exit (EXIT_FAILURE);
+    }
   }
 
   /*

@@ -9,7 +9,7 @@
 #include "Zank.h"
 #include "utils.h"
 
-#define BUF_SIZE 500
+#define CLIENTS_MAX 10
 
 /*
  * Later this will be passed from the command line
@@ -18,7 +18,7 @@
 #define STR_PORT_NUM "7001"
 
 void
-run_server (st_player_data *player)
+run_server (void)
 {
   struct addrinfo hints;
   struct addrinfo *result, *rp;
@@ -64,6 +64,20 @@ run_server (st_player_data *player)
 
   freeaddrinfo (result);
 
+  st_player_data *clients[CLIENTS_MAX];
+
+  *clients = (st_player_data*)malloc (sizeof (st_player_data) * CLIENTS_MAX);
+  if (*clients == NULL)
+  {
+    fprintf (stderr, "Error allocating memory...\n");
+    exit (EXIT_FAILURE);
+  }
+
+  int cl_num;
+
+  for (cl_num = 0; cl_num < CLIENTS_MAX; cl_num++)
+    clients[cl_num] = NULL;
+
   for (;;)
   {
     peer_addr_len = sizeof (struct sockaddr_storage);
@@ -81,24 +95,63 @@ run_server (st_player_data *player)
 
     if (s == 0)
     {
-      printf ("incoming string: %s\n", buf);
+      cl_num = 0;
 
-      char *comma_ptr;
-      if (*buf == 'y')
+      while (cl_num < CLIENTS_MAX)
       {
-        comma_ptr = strchr (buf, ',');
-        del_char_shift_left (',', &comma_ptr);
-        player->pos_y = atoi (comma_ptr);
+        if (clients[cl_num] != NULL)
+        {
+          if (strcmp (host, clients[cl_num]->address) == 0)
+            break;
+        }
+
+        cl_num++;
       }
 
-      else if (*buf == 'x')
+      if (cl_num == CLIENTS_MAX && clients[cl_num - 1] == NULL)
       {
-        comma_ptr = strchr (buf, ',');
-        del_char_shift_left (',', &comma_ptr);
-        player->pos_x = atoi (comma_ptr);
+        cl_num = 0;
+
+        printf ("%d\n", cl_num);
+
+        do
+        {
+          if (clients[cl_num] == NULL)
+          {
+            clients[cl_num] = (st_player_data*)malloc (sizeof (st_player_data));
+            if (clients[cl_num] == NULL)
+            {
+              fprintf (stderr, "Error allocating memory.\n");
+              exit (EXIT_FAILURE);
+            }
+            snprintf (clients[cl_num]->address, BUF_SIZE, "%s", host);
+            break;
+          }
+          cl_num++;
+
+        }while (cl_num < CLIENTS_MAX);
       }
 
-      printf ("Player position is %d,%d\n", player->pos_y, player->pos_x);
+      if (cl_num == CLIENTS_MAX)
+      {
+        printf ("Cannot accept input, max connected clients (%d) reached.", CLIENTS_MAX);
+        continue;
+      }
+
+      printf ("incoming string from %s: %s\n", host, buf);
+
+      char *chomp_ptr;
+      if (strncmp (buf, "pos", 3) == 0)
+      {
+        chomp_ptr = strtok (buf, "=");
+        chomp_ptr = strtok (NULL, ",");
+        del_char_shift_left (' ', &chomp_ptr);
+        clients[cl_num]->pos_y = atoi (chomp_ptr);
+        chomp_ptr = strtok (NULL, ",");
+        clients[cl_num]->pos_x = atoi (chomp_ptr);
+
+        printf ("position for %s is %d,%d\n", host, clients[cl_num]->pos_y, clients[cl_num]->pos_x);
+      }
 
       printf ("Received %zd bytes from %s:%s\n\n", nread, host, service);
     }
@@ -116,7 +169,7 @@ zank_connect (char *const *argv, const char *zank_host)
 {
   struct addrinfo hints;
   struct addrinfo *result, *rp;
-  int sfd, s, j;
+  int sfd, s;
   size_t len;
   ssize_t nread;
   char buf[BUF_SIZE];

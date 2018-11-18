@@ -51,6 +51,8 @@
 #define X 10
 #define Y 10
 
+#define BUF_SIZE 512 + 1
+
 #define PACKAGE "Zank"
 #define VERSION "0.0.6-dev"
 #define AUTHOR "Andy Alt"
@@ -72,6 +74,7 @@ struct st_direction {
 
 typedef struct st_player_data st_player_data;
 struct st_player_data {
+  char address[BUF_SIZE];
   int health;
   int pos_x;
   int pos_y;

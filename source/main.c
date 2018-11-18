@@ -102,7 +102,7 @@ main (int argc, char* const *argv)
   player.pos_y = Y / 2;
 
   if (is_server)
-    run_server (&player);
+    run_server ();
 
   /**
    * NOTE: the order here must match with the object listed in the
