@@ -194,12 +194,7 @@ main (int argc, char* const *argv)
     }
   }
 
-  objects *object = (objects*)malloc (sizeof (objects));
-  if (object == NULL)
-  {
-    fprintf (stderr, "Error allocating memory.\n");
-    exit (EXIT_FAILURE);
-  }
+  objects object;
 
   for (column = 0; column < X; column++)
   {
@@ -207,13 +202,13 @@ main (int argc, char* const *argv)
     {
       do
       {
-        object->pos = rand () % 8;
+        object.pos = rand () % 8;
       }
-      while (object->pos == politician);
+      while (object.pos == politician);
 
       if (map[column][row] != politician &&
           map[column][row] != MagicWaterfall)
-        map[column][row] = object->pos;
+        map[column][row] = object.pos;
     }
   }
 
@@ -324,7 +319,7 @@ main (int argc, char* const *argv)
       break;
 
     case 'i':
-      showitems (object);
+      showitems (&object);
       flag = 1;
       break;
 
@@ -353,26 +348,26 @@ main (int argc, char* const *argv)
     {
       Visited[player.pos_x][player.pos_y] = 1;
 
-      object->pos = map[player.pos_x][player.pos_y];
+      object.pos = map[player.pos_x][player.pos_y];
 
-      printw ("\nYou see %s\n", mapObject[object->pos]);
+      printw ("\nYou see %s\n", mapObject[object.pos]);
 
       bool acquire = 0;
-      switch (object->pos)
+      switch (object.pos)
       {
       case an_incriminating_document:
         acquire = 1;
-        object->documents++;
+        object.documents++;
         break;
 
       case Magic_Ring:
         acquire = 1;
-        object->rings++;
+        object.rings++;
         break;
 
       case Sword:
         acquire = 1;
-        object->swords++;
+        object.swords++;
         break;
 
       default:
@@ -387,42 +382,42 @@ main (int argc, char* const *argv)
 
       printw ("\n");
 
-      switch (object->pos)
+      switch (object.pos)
       {
       case politician:
         /* locations[foundpolitician][0] = x;
            locations[foundpolitician][1] = y;
            foundpolitician++; */
 
-        if (object->documents)
+        if (object.documents)
         {
           if (accuse (&player))
           {
-            object->documents--;
+            object.documents--;
             indictedCtr++;
           }
         }
-        else if (object->rings)
+        else if (object.rings)
         {
           if (accuse (&player))
           {
-            object->rings--;
+            object.rings--;
             indictedCtr++;
           }
         }
-        else if (!object->documents && !object->rings)
+        else if (!object.documents && !object.rings)
           printw
             ("If you had some incriminating documents or magic rings,\nyou'd be able to indict him.\n");
         break;
 
       case Wall:
         wall ();
-        if (t == 1 && object->rings)
+        if (t == 1 && object.rings)
         {
           printw ("You ran into a wall and ruined a Magic Ring.\n");
-          object->rings--;
+          object.rings--;
         }
-        else if (!t && !object->rings)
+        else if (!t && !object.rings)
         {
           printw ("You ran into wall. (-1 hp)\n");
           player.health--;
@@ -431,11 +426,11 @@ main (int argc, char* const *argv)
 
       case Lake:
         lake ();
-        if (t == 1 && object->documents)
+        if (t == 1 && object.documents)
         {
           printw
             ("You fell into the lake and lost an incriminating document.\n");
-          object->documents--;
+          object.documents--;
         }
         else if (t == 0)
         {
@@ -459,10 +454,10 @@ main (int argc, char* const *argv)
 
       case Clearing:
         which_creature = rand () % creature_count;
-        if (object->seeds)
+        if (object.seeds)
         {
           printw ("You plant a seed. You feel better. (+1 hp)\n");
-          object->seeds--;
+          object.seeds--;
           t = rand () % 4;
 
           if (t >= 0 && t < 3)
@@ -478,7 +473,7 @@ main (int argc, char* const *argv)
         }
 
         t = rand () % 4;
-        if (t < 3 && !object->swords)
+        if (t < 3 && !object.swords)
         {
           printw
             ("You had no cover in the clearing and have been attacked by\n");
@@ -486,23 +481,23 @@ main (int argc, char* const *argv)
                   creatures[which_creature].strength);
           player.health = player.health - creatures[which_creature].strength;
         }
-        else if (t < 3 && object->swords)
+        else if (t < 3 && object.swords)
         {
           printw
             ("You had no cover in the clearing and have been attacked by\n");
           printw ("\n%s.\n\nFortunately your sword\n", creatures[which_creature].name);
           printw
             ("protected you. That sword is now broken and you discard it.\n\n");
-          object->swords--;
+          object.swords--;
         }
-        else if (t < 3 && object->rings)
+        else if (t < 3 && object.rings)
         {
           printw
             ("You had no cover in the clearing and have been attacked by\n");
           printw ("\n%s.\n\nFortunately your Magic\n", creatures[which_creature].name);
           printw
             ("Ring protected you. That ring is now broken and you discard it.\n\n");
-          object->rings--;
+          object.rings--;
         }
         break;
 
@@ -523,7 +518,7 @@ main (int argc, char* const *argv)
 
       case Seed:
         printw ("Acquiring Seed.\n");
-        object->seeds++;
+        object.seeds++;
         map[player.pos_x][player.pos_y] = Clearing;
         break;
 
@@ -558,7 +553,7 @@ main (int argc, char* const *argv)
           politicianCtr, indictedCtr);
   printw ("Your health is %d\n\n", player.health);
 
-  showitems (object);
+  showitems (&object);
 
   printw ("\nEnter 'x' to exit\n");
   refresh ();
@@ -566,8 +561,6 @@ main (int argc, char* const *argv)
   {
   }
   endwin ();
-
-  free (object);
 
   return 0;
 }
