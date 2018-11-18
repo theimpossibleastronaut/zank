@@ -30,7 +30,8 @@
 bool
 accuse (st_player_data *player)
 {
-  if (map[player->pos_x][player->pos_y] == indicted_politician)
+  extern st_map map;
+  if (map.cell[player->cell].object[0] == indicted_politician)
   {
     printw ("This politician has been indicted recently.\n");
     return 0;
@@ -63,12 +64,12 @@ accuse (st_player_data *player)
     player->health = player->health - 5;
   }
 
-  map[player->pos_x][player->pos_y] = indicted_politician;
+  map.cell[player->cell].object[0] = indicted_politician;
   return 1;
 }
 
 void
-showitems (objects * object)
+showitems (st_objects * object)
 {
 
   printw ("Your inventory:\n");
@@ -154,35 +155,37 @@ lake (void)
 }
 
 void
-showMap (st_player_data *player, bool Visited[X][Y])
+showMap (st_player_data *player)
 {
+  extern st_map map;
   int column, row;
-
   short print_row = 2;
-
+  int ctr = 0;
   for (column = X - 1; column >= 0; column--)
   {
     mvprintw (print_row++, 64, "");
 
     for (row = 0; row < Y; row++)
     {
-      if (column == player->pos_x && row == player->pos_y)
+      if (ctr == player->cell)
         printw ("@");
-      else if (Visited[column][row] == 1)
+      else if (map.cell[ctr].is_explored == 1)
       {
-        if (map[column][row] == politician)
+        if (map.cell[ctr].object[0] == politician)
           printw ("p");
-        else if (map[column][row] == Wall)
+        else if (map.cell[ctr].object[0] == Wall)
           printw ("W");
-        else if (map[column][row] == Lake)
+        else if (map.cell[ctr].object[0] == Lake)
           printw ("L");
-        else if (map[column][row] == Grapevine)
+        else if (map.cell[ctr].object[0] == Grapevine)
           printw ("G");
         else
           printw ("X");
       }
       else
         printw ("*");
+
+      ctr++;
     }
   }
 }
@@ -190,9 +193,10 @@ showMap (st_player_data *player, bool Visited[X][Y])
 void
 prompt (st_player_data *player, short pCtr, short iCtr)
 {
+  extern st_map map;
   mvprintw (22, 0,
             "\n(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ",
-            player->pos_y, player->pos_x, pCtr - iCtr, player->health);
+            map.cell[player->cell].pos_y, map.cell[player->cell].pos_x, pCtr - iCtr, player->health);
 }
 
 bool
@@ -210,24 +214,15 @@ void change_pos(st_player_data *player, const char c, int which)
   extern const int sfd;
   extern const bool is_client;
   char buf[1024];
-  switch (c)
-  {
-    case 'y':
-      player->pos_y = player->pos_y + direction[which].offset;
-      break;
-    case 'x':
-      player->pos_x = player->pos_x + direction[which].offset;
-      break;
-    default:
-      break;
-  }
+  player->cell = player->cell + direction[which].offset;
 
   if (is_client)
   {
     char y_str_pos[4];
     char x_str_pos[4];
-    itoa (player->pos_y, y_str_pos);
-    itoa (player->pos_x, x_str_pos);
+    extern st_map map;
+    itoa (map.cell[player->cell].pos_y, y_str_pos);
+    itoa (map.cell[player->cell].pos_x, x_str_pos);
     int len = snprintf (buf, BUF_SIZE, "pos = %s,%s", y_str_pos, x_str_pos);
     len++;
     if (write (sfd, buf, len) != len)

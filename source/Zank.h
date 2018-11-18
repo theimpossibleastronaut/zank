@@ -48,16 +48,38 @@
  *  Define the grid size
  */
 
-#define X 10
-#define Y 10
+#ifndef X
+  #define X 10
+#endif
+#ifndef Y
+  #define Y 10
+#endif
+
+/*
+ * if parentheses aren't used here, rand doesn't produce
+ * good results due to operator precedence
+ */
+#define MAP_SIZE (X * Y)
 
 #define BUF_SIZE 512 + 1
+#define MAX_CELL_OBJECTS 4
 
 #define PACKAGE "Zank"
 #define VERSION "0.0.6-dev"
 #define AUTHOR "Andy Alt"
 
-int map[X][Y];
+typedef struct st_cell st_cell;
+struct st_cell {
+  int pos_x;
+  int pos_y;
+  int object[MAX_CELL_OBJECTS];
+  bool is_explored;
+};
+
+typedef struct st_map st_map;
+struct st_map {
+  st_cell cell[MAP_SIZE];
+};
 
 enum {
   WEST,
@@ -76,12 +98,11 @@ typedef struct st_player_data st_player_data;
 struct st_player_data {
   char address[BUF_SIZE];
   int health;
-  int pos_x;
-  int pos_y;
+  int cell;
 };
 
-typedef struct objects objects;
-struct objects {
+typedef struct st_objects st_objects;
+struct st_objects {
   int documents;
   int rings;
   int swords;

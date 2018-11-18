@@ -29,11 +29,13 @@
 #include "usage.h"
 #include "net.h"
 
+st_map map;
+
 st_direction direction[] = {
   { "West", -1 },
   { "East", 1 },
-  { "North", 1 },
-  { "South", -1 }
+  { "North", -Y },
+  { "South", Y }
 };
 
 /*
@@ -98,8 +100,7 @@ main (int argc, char* const *argv)
 /**
  * Starting position
  */
-  player.pos_x = X / 2;
-  player.pos_y = Y / 2;
+  player.cell = MAP_SIZE / 2;
 
   if (is_server)
     run_server ();
@@ -159,57 +160,59 @@ main (int argc, char* const *argv)
 
   bool flag = 0;
 
-  srand (time (0));
+  srand (time (NULL));
 
   int randgrape;
 
 /**
  * Generate coordinates for Magic Waterfall
  */
-  int rx, ry;
-  rx = rand () % X;
-  ry = rand () % Y;
+  int waterfall_pos = rand () % MAP_SIZE;
+  map.cell[waterfall_pos].object[0] = MagicWaterfall;
 
-  const unsigned short politician_total = X * Y / 6;
-
-/**
+/*
+ *
  * Initialize map
+ *
  */
-  unsigned short column, row;
-  int politicianCtr = 0;
 
-  map[rx][ry] = MagicWaterfall;
+  int pos_x, pos_y;
+  int num = 0;
+  for (pos_x = 0; pos_x < X; pos_x++)
+    for (pos_y = 0; pos_y < Y; pos_y++)
+    {
+      map.cell[num].pos_x = pos_x;
+      map.cell[num].pos_y = pos_y;
+      num++;
+    }
+
+  const unsigned short politician_total = MAP_SIZE / 6;
+  int politicianCtr = 0;
 
   while (politicianCtr < politician_total)
   {
-    int rand_x, rand_y;
-    rand_x = rand () % X;
-    rand_y = rand () % Y;
-
-    if (map[rand_x][rand_y] != politician &&
-        (map[rand_x][rand_y] != MagicWaterfall))
+    int politician_pos = rand () % MAP_SIZE;
+    if (map.cell[politician_pos].object[0] != politician &&
+        (map.cell[politician_pos].object[0] != MagicWaterfall))
     {
-      map[rand_x][rand_y] = politician;
+      map.cell[politician_pos].object[0] = politician;
       politicianCtr++;
     }
   }
 
-  objects object;
+  st_objects object = { 0,0,0,0,0};
 
-  for (column = 0; column < X; column++)
+  int ctr;
+  for (ctr = 0; ctr < MAP_SIZE; ctr++)
   {
-    for (row = 0; row < Y; row++)
+    do
     {
-      do
-      {
-        object.pos = rand () % 8;
-      }
-      while (object.pos == politician);
+      object.pos = rand () % 8;
+    }while (object.pos == politician);
 
-      if (map[column][row] != politician &&
-          map[column][row] != MagicWaterfall)
-        map[column][row] = object.pos;
-    }
+    if (map.cell[ctr].object[0] != politician &&
+        map.cell[ctr].object[0] != MagicWaterfall)
+      map.cell[ctr].object[0] = object.pos;
   }
 
   politicianCtr = politician_total;
@@ -222,19 +225,6 @@ main (int argc, char* const *argv)
   printw ("By %s\n", AUTHOR);
   printw ("With code contributions from mzdelong\n");
   refresh ();
-
-  /* prompt(politicianCtr, indictedCtr);
-     refresh(); */
-
-  bool Visited[X][Y];
-  /**
-   * Init Array
-   */
-  for (column = 0; column < X; column++) {
-    for (row = 0; row < Y; row++) {
-      Visited[column][row] = 0;
-    }
-  }
 
   bool isStarting = 1;
 
@@ -291,28 +281,28 @@ main (int argc, char* const *argv)
     switch (c)
     {
     case 'e':
-      if (player.pos_y < Y - 1)
+      if (map.cell[player.cell].pos_y < Y -1)
         change_pos(&player, 'y', EAST);
       else
         flag = borderPatrol (&player);
       break;
 
     case 'w':
-      if (player.pos_y > 0)
+      if (map.cell[player.cell].pos_y > 0)
         change_pos(&player, 'y', WEST);
       else
         flag = borderPatrol (&player);
       break;
 
     case 's':
-      if (player.pos_x > 0)
+      if (map.cell[player.cell].pos_x < X - 1)
         change_pos (&player, 'x', SOUTH);
       else
         flag = borderPatrol (&player);
       break;
 
     case 'n':
-      if (player.pos_x < X - 1)
+      if (map.cell[player.cell].pos_x > 0)
         change_pos (&player, 'x', NORTH);
       else
         flag = borderPatrol (&player);
@@ -346,9 +336,9 @@ main (int argc, char* const *argv)
 
     if (!flag)
     {
-      Visited[player.pos_x][player.pos_y] = 1;
+      map.cell[player.cell].is_explored = 1;
 
-      object.pos = map[player.pos_x][player.pos_y];
+      object.pos = map.cell[player.cell].object[0];
 
       printw ("\nYou see %s\n", mapObject[object.pos]);
 
@@ -376,8 +366,8 @@ main (int argc, char* const *argv)
 
       if (acquire)
       {
-        printw ("Acquiring %s\n", mapObject[map[player.pos_x][player.pos_y]]);
-        map[player.pos_x][player.pos_y] = Seed;
+        printw ("Acquiring %s\n", mapObject[map.cell[player.cell].object[0]]);
+        map.cell[player.cell].object[0] = Seed;
       }
 
       printw ("\n");
@@ -449,7 +439,7 @@ main (int argc, char* const *argv)
         printw
           ("You swim at the base of the Magic Waterfall and feel much better. (+40 hp)\n");
         player.health = player.health + 40;
-        map[player.pos_x][player.pos_y] = Dried_up_Waterfall;
+        map.cell[player.cell].object[0] = Dried_up_Waterfall;
         break;
 
       case Clearing:
@@ -466,10 +456,10 @@ main (int argc, char* const *argv)
            * map[x][player.pos_y] will equal one of the items for the enum declaration
            * item 5-7
            */
-            map[player.pos_x][player.pos_y] = t + an_incriminating_document;
+            map.cell[player.cell].object[0] = t + an_incriminating_document;
           }
           else
-            map[player.pos_x][player.pos_y] = Grapevine;
+            map.cell[player.cell].object[0] = Grapevine;
         }
 
         t = rand () % 4;
@@ -519,7 +509,7 @@ main (int argc, char* const *argv)
       case Seed:
         printw ("Acquiring Seed.\n");
         object.seeds++;
-        map[player.pos_x][player.pos_y] = Clearing;
+        map.cell[player.cell].object[0] = Clearing;
         break;
 
       case Grapevine:
@@ -543,7 +533,7 @@ main (int argc, char* const *argv)
       }
     }
     prompt (&player, politicianCtr, indictedCtr);
-    showMap (&player, Visited);
+    showMap (&player);
     refresh ();
   }
 

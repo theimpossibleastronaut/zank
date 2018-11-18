@@ -143,14 +143,15 @@ run_server (void)
       char *chomp_ptr;
       if (strncmp (buf, "pos", 3) == 0)
       {
-        chomp_ptr = strtok (buf, "=");
+        /*chomp_ptr = strtok (buf, "=");
         chomp_ptr = strtok (NULL, ",");
         del_char_shift_left (' ', &chomp_ptr);
-        clients[cl_num]->pos_y = atoi (chomp_ptr);
+        clients[cl_num].cell->pos_y = atoi (chomp_ptr);
         chomp_ptr = strtok (NULL, ",");
         clients[cl_num]->pos_x = atoi (chomp_ptr);
 
         printf ("position for %s is %d,%d\n", host, clients[cl_num]->pos_y, clients[cl_num]->pos_x);
+        */
       }
 
       printf ("Received %zd bytes from %s:%s\n\n", nread, host, service);
