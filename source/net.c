@@ -140,17 +140,15 @@ run_server (void)
       printf ("incoming string from %s: %s\n", host, buf);
 
       char *chomp_ptr;
-      if (strncmp (buf, "pos", 3) == 0)
+      if (strncmp (buf, "cell", 4) == 0)
       {
-        /*chomp_ptr = strtok (buf, "=");
-        chomp_ptr = strtok (NULL, ",");
-        del_char_shift_left (' ', &chomp_ptr);
-        clients[cl_num].cell->pos_y = atoi (chomp_ptr);
-        chomp_ptr = strtok (NULL, ",");
-        clients[cl_num]->pos_x = atoi (chomp_ptr);
-
-        printf ("position for %s is %d,%d\n", host, clients[cl_num]->pos_y, clients[cl_num]->pos_x);
-        */
+        chomp_ptr = strtok (buf, "=");
+        clients[cl_num]->cell = atoi (chomp_ptr);
+        extern const st_map map;
+        printf ("position for %s is %d,%d\n",
+                host,
+                map.cell[clients[cl_num]->cell].pos_y,
+                map.cell[clients[cl_num]->cell].pos_x);
       }
 
       printf ("Received %zd bytes from %s:%s\n\n", nread, host, service);

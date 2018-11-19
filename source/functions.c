@@ -218,12 +218,10 @@ void change_pos(st_player_data *player, const char c, int which)
 
   if (is_client)
   {
-    char y_str_pos[4];
-    char x_str_pos[4];
+    char cell_num[BUF_SIZE];
     extern st_map map;
-    itoa (map.cell[player->cell].pos_y, y_str_pos);
-    itoa (map.cell[player->cell].pos_x, x_str_pos);
-    int len = snprintf (buf, BUF_SIZE, "pos = %s,%s", y_str_pos, x_str_pos);
+    itoa (player->cell, cell_num);
+    int len = snprintf (buf, BUF_SIZE, "cell = %s", cell_num);
     len++;
     if (write (sfd, buf, len) != len)
     {
