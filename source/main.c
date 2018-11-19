@@ -103,7 +103,10 @@ main (int argc, char* const *argv)
   player.cell = MAP_SIZE / 2;
 
   if (is_server)
+  {
+    init_map_cell_positions ();
     run_server ();
+  }
 
   /**
    * NOTE: the order here must match with the object listed in the
@@ -176,7 +179,6 @@ main (int argc, char* const *argv)
  *
  */
   init_map_cell_positions ();
-
   const unsigned short politician_total = MAP_SIZE / 6;
   int politicianCtr = 0;
 

@@ -143,7 +143,9 @@ run_server (void)
       if (strncmp (buf, "cell", 4) == 0)
       {
         chomp_ptr = strtok (buf, "=");
+        chomp_ptr = strtok (NULL, "=");
         clients[cl_num]->cell = atoi (chomp_ptr);
+
         extern const st_map map;
         printf ("position for %s is %d,%d\n",
                 host,
