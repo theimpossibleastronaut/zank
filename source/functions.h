@@ -35,3 +35,4 @@ void showMap (st_player_data *player);
 void prompt (st_player_data *player, short pCtr, short iCtr);
 bool borderPatrol (st_player_data *player);
 void change_pos(st_player_data *player, const char c, int which);
+void init_map_cell_positions ();

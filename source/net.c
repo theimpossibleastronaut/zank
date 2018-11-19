@@ -65,7 +65,6 @@ run_server (void)
   freeaddrinfo (result);
 
   st_player_data *clients[CLIENTS_MAX];
-
   *clients = (st_player_data*)malloc (sizeof (st_player_data) * CLIENTS_MAX);
   if (*clients == NULL)
   {

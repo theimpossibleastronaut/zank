@@ -246,4 +246,19 @@ void change_pos(st_player_data *player, const char c, int which)
   return;
 }
 
+void
+init_map_cell_positions ()
+{
+  extern st_map map;
+  int pos_x, pos_y;
+  int num = 0;
+  for (pos_x = 0; pos_x < X; pos_x++)
+    for (pos_y = 0; pos_y < Y; pos_y++)
+    {
+      map.cell[num].pos_x = pos_x;
+      map.cell[num].pos_y = pos_y;
+      num++;
+    }
+}
+
 
