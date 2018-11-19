@@ -213,7 +213,6 @@ void change_pos(st_player_data *player, const char c, int which)
   extern const st_direction direction[];
   extern const int sfd;
   extern const bool is_client;
-  char buf[1024];
   player->cell = player->cell + direction[which].offset;
 
   if (is_client)
@@ -221,6 +220,7 @@ void change_pos(st_player_data *player, const char c, int which)
     char cell_num[BUF_SIZE];
     extern st_map map;
     itoa (player->cell, cell_num);
+    char buf[BUF_SIZE];
     int len = snprintf (buf, BUF_SIZE, "cell = %s", cell_num);
     len++;
     if (write (sfd, buf, len) != len)

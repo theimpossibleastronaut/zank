@@ -25,7 +25,6 @@ run_server (void)
   int sfd, s;
   struct sockaddr_storage peer_addr;
   socklen_t peer_addr_len;
-  ssize_t nread;
   char buf[BUF_SIZE];
 
   memset (&hints, 0, sizeof (struct addrinfo));
@@ -80,7 +79,7 @@ run_server (void)
   for (;;)
   {
     peer_addr_len = sizeof (struct sockaddr_storage);
-    nread =
+    ssize_t nread =
       recvfrom (sfd, buf, BUF_SIZE, 0, (struct sockaddr *) &peer_addr,
                 &peer_addr_len);
     if (nread == -1)
@@ -139,10 +138,9 @@ run_server (void)
 
       printf ("incoming string from %s: %s\n", host, buf);
 
-      char *chomp_ptr;
       if (strncmp (buf, "cell", 4) == 0)
       {
-        chomp_ptr = strtok (buf, "=");
+        char *chomp_ptr = strtok (buf, "=");
         chomp_ptr = strtok (NULL, "=");
         clients[cl_num]->cell = atoi (chomp_ptr);
 

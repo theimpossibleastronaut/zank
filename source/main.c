@@ -161,8 +161,6 @@ main (int argc, char* const *argv)
 
   int which_creature;
 
-  bool flag = 0;
-
   srand (time (NULL));
 
   int randgrape;
@@ -241,9 +239,8 @@ main (int argc, char* const *argv)
       isStarting = 0;
     }
 
-    int t;
-    t = rand () % 2;
-    flag = 0;
+    int t = rand () % 2;
+    bool flag = 0;
 
     /* This way caps lock doesn't matter */
     if (isupper (c))
