@@ -195,7 +195,7 @@ prompt (st_player_data *player, short pCtr, short iCtr)
 {
   extern st_map map;
   mvprintw (22, 0,
-            "\n(%d,%d) (politicians left to retire: %d) (HP: %d) (i,m,q[uit]) (e,w,n,s)? ",
+            "\n(%d,%d) (politicians left to retire: %d) (HP: %d) (i,q[uit]) (e,w,n,s)? ",
             map.cell[player->cell].pos_y, map.cell[player->cell].pos_x, pCtr - iCtr, player->health);
 }
 
