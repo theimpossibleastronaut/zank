@@ -33,10 +33,13 @@
 st_map map;
 
 st_direction direction[] = {
-  { "West", -1 },
-  { "East", 1 },
-  { "North", -Y },
-  { "South", Y }
+  {"West", -1}
+  ,
+  {"East", 1}
+  ,
+  {"North", -Y}
+  ,
+  {"South", Y}
 };
 
 /*
@@ -48,7 +51,7 @@ bool is_client = 0;
 bool is_server = 0;
 
 int
-main (int argc, char* const *argv)
+main (int argc, char *const *argv)
 {
   char *zank_host = NULL;
 
@@ -68,26 +71,27 @@ main (int argc, char* const *argv)
   {
     next_option = getopt_long (argc, argv, short_options, long_options, NULL);
 
-    switch ((char)next_option)
+    switch ((char) next_option)
     {
-      case 'c':
-        zank_host = optarg;
-        sfd = zank_connect (argv, zank_host);
-        is_client = 1;
-        break;
-      case 's':
-        is_server = 1;
-        break;
-      case 'h':                /* -h */
-        display_help ();
-        return 0;
-      case 'v':
-        display_version ();
-        return 0;
-      default:
-        break;
+    case 'c':
+      zank_host = optarg;
+      sfd = zank_connect (argv, zank_host);
+      is_client = 1;
+      break;
+    case 's':
+      is_server = 1;
+      break;
+    case 'h':                  /* -h */
+      display_help ();
+      return 0;
+    case 'v':
+      display_version ();
+      return 0;
+    default:
+      break;
     }
-  } while (next_option != -1);
+  }
+  while (next_option != -1);
 
   if (is_server && is_client)
   {
@@ -158,7 +162,7 @@ main (int argc, char* const *argv)
     {"hallucinations", 6}
   };
 
-  int creature_count = ARRAY_SIZE(creatures);
+  int creature_count = ARRAY_SIZE (creatures);
 
   int which_creature;
 
@@ -192,7 +196,7 @@ main (int argc, char* const *argv)
     }
   }
 
-  st_objects object = { 0,0,0,0,0};
+  st_objects object = { 0, 0, 0, 0, 0 };
 
   int ctr;
   for (ctr = 0; ctr < MAP_SIZE; ctr++)
@@ -200,7 +204,8 @@ main (int argc, char* const *argv)
     do
     {
       object.pos = rand () % 8;
-    }while (object.pos == politician);
+    }
+    while (object.pos == politician);
 
     if (map.cell[ctr].object[0] != politician &&
         map.cell[ctr].object[0] != MagicWaterfall)
@@ -227,7 +232,8 @@ main (int argc, char* const *argv)
 
   short c = -999;
 
-  while (c != EOF && player.health > 0 && politicianCtr != indictedCtr && c != 'q')
+  while (c != EOF && player.health > 0 && politicianCtr != indictedCtr
+         && c != 'q')
   {
     if (isStarting == 0)
     {
@@ -251,8 +257,8 @@ main (int argc, char* const *argv)
     {
     case KEY_RIGHT:
     case 'e':
-      if (map.cell[player.cell].pos_y < Y -1)
-        change_pos(&player, 'y', EAST);
+      if (map.cell[player.cell].pos_y < Y - 1)
+        change_pos (&player, 'y', EAST);
       else
         flag = borderPatrol (&player);
       break;
@@ -260,7 +266,7 @@ main (int argc, char* const *argv)
     case KEY_LEFT:
     case 'w':
       if (map.cell[player.cell].pos_y > 0)
-        change_pos(&player, 'y', WEST);
+        change_pos (&player, 'y', WEST);
       else
         flag = borderPatrol (&player);
       break;
@@ -448,7 +454,8 @@ main (int argc, char* const *argv)
         {
           printw
             ("You had no cover in the clearing and have been attacked by\n");
-          printw ("\n%s.\n\nFortunately your sword\n", creatures[which_creature].name);
+          printw ("\n%s.\n\nFortunately your sword\n",
+                  creatures[which_creature].name);
           printw
             ("protected you. That sword is now broken and you discard it.\n\n");
           object.swords--;
@@ -457,7 +464,8 @@ main (int argc, char* const *argv)
         {
           printw
             ("You had no cover in the clearing and have been attacked by\n");
-          printw ("\n%s.\n\nFortunately your Magic\n", creatures[which_creature].name);
+          printw ("\n%s.\n\nFortunately your Magic\n",
+                  creatures[which_creature].name);
           printw
             ("Ring protected you. That ring is now broken and you discard it.\n\n");
           object.rings--;

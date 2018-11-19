@@ -30,8 +30,8 @@
 
 typedef struct creature creature;
 
-struct creature {
+struct creature
+{
   const char *name;
   const int strength;
 };
-
