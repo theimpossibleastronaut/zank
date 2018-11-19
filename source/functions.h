@@ -28,9 +28,6 @@
 
 bool accuse (st_player_data *player);
 void showitems (st_objects * object);
-void tree (void);
-void wall (void);
-void lake (void);
 void showMap (st_player_data *player);
 void prompt (st_player_data *player, short pCtr, short iCtr);
 bool borderPatrol (st_player_data *player);

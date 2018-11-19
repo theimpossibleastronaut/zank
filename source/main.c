@@ -28,6 +28,7 @@
 #include "functions.h"
 #include "usage.h"
 #include "net.h"
+#include "graphics.h"
 
 st_map map;
 
