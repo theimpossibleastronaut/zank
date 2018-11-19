@@ -249,28 +249,7 @@ main (int argc, char* const *argv)
 
     switch (c)
     {
-    case KEY_UP:
-      c = 'n';
-      break;
-
-    case KEY_DOWN:
-      c = 's';
-      break;
-
-    case KEY_LEFT:
-      c = 'w';
-      break;
-
     case KEY_RIGHT:
-      c = 'e';
-      break;
-
-    default:
-      break;
-    }
-
-    switch (c)
-    {
     case 'e':
       if (map.cell[player.cell].pos_y < Y -1)
         change_pos(&player, 'y', EAST);
@@ -278,6 +257,7 @@ main (int argc, char* const *argv)
         flag = borderPatrol (&player);
       break;
 
+    case KEY_LEFT:
     case 'w':
       if (map.cell[player.cell].pos_y > 0)
         change_pos(&player, 'y', WEST);
@@ -285,6 +265,7 @@ main (int argc, char* const *argv)
         flag = borderPatrol (&player);
       break;
 
+    case KEY_DOWN:
     case 's':
       if (map.cell[player.cell].pos_x < X - 1)
         change_pos (&player, 'x', SOUTH);
@@ -292,6 +273,7 @@ main (int argc, char* const *argv)
         flag = borderPatrol (&player);
       break;
 
+    case KEY_UP:
     case 'n':
       if (map.cell[player.cell].pos_x > 0)
         change_pos (&player, 'x', NORTH);
