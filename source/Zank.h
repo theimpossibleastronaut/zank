@@ -111,8 +111,9 @@ struct st_objects {
   int pos;
 };
 
-/**
-* NOTE: the order here must match with the objects listed in the
+/** \page code enumerated map objects
+ * \section map_objects Map Objects
+* The order of each object must match with the objects listed in the
 * mapObjects[] declaration in main.c
 */
 enum

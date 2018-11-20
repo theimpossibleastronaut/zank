@@ -113,9 +113,10 @@ main (int argc, char *const *argv)
     run_server ();
   }
 
-  /**
-   * NOTE: the order here must match with the object listed in the
-   * enum declaration in Zank.h
+  /** \page code Map Objects stringified
+   * The order of the objects in string form
+   * here must match with the object listed in the
+   * enum declaration in Zank.h \ref map_objects
    */
   char *mapObject[] = {
     "a tree",
@@ -170,15 +171,21 @@ main (int argc, char *const *argv)
 
   int randgrape;
 
-/**
- * Generate coordinates for Magic Waterfall
+/** \page code Magic Waterfall
+ * A number between 0 and 100 is generated to determine the position of
+ * the magic waterfall, and then the cell is assigned the value corresponding
+ * to the magic waterfall.
  */
   int waterfall_pos = rand () % MAP_SIZE;
   map.cell[waterfall_pos].object[0] = MagicWaterfall;
 
-/*
- *
- * Initialize map
+/** \page code How politicians are placed
+ * The total number of politicians are determined by the MAP_SIZE
+ * divided by 6. Within a loop, a random number between 0 and MAP_SIZE
+ * is generated. The politician is placed into the corresponding cell.
+ * The code loops until politician_total is reached. During each iteration
+ * of the loop, the cell is checked to make sure it's not already occupied
+ * by a politician.
  *
  */
   init_map_cell_positions ();
@@ -225,9 +232,9 @@ main (int argc, char *const *argv)
 
   bool isStarting = 1;
 
- /**
-  * from the ncurses library - needed for cursor key checking
-  */
+  /*
+   * from the ncurses library - needed for cursor key checking
+   */
   keypad (stdscr, TRUE);
 
   short c = -999;
@@ -253,6 +260,10 @@ main (int argc, char *const *argv)
     if (isupper (c))
       c = tolower (c);
 
+    /** \page gameplay How to play
+     * A user can move East (right), West (left), North (up), South (down)
+     * by using the cursor keys or corresponding direction key (e, w, n, s).
+     */
     switch (c)
     {
     case KEY_RIGHT:
