@@ -69,16 +69,16 @@ accuse (st_player_data *player)
 }
 
 void
-showitems (st_objects * object)
+showitems (st_player_data *player)
 {
 
   printw ("Your inventory:\n");
-  if (object->swords || object->documents || object->rings || object->seeds)
+  if (player->inventory.swords || player->inventory.documents || player->inventory.rings || player->inventory.seeds)
   {
-    printw ("Swords: %d\n", object->swords);
-    printw ("Incriminating Documents: %d\n", object->documents);
-    printw ("Magic Rings: %d\n", object->rings);
-    printw ("Seeds: %d\n", object->seeds);
+    printw ("Swords: %d\n", player->inventory.swords);
+    printw ("Incriminating Documents: %d\n", player->inventory.documents);
+    printw ("Magic Rings: %d\n", player->inventory.rings);
+    printw ("Seeds: %d\n", player->inventory.seeds);
   }
 
   else

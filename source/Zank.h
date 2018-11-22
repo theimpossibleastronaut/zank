@@ -94,21 +94,20 @@ struct st_direction {
   int offset;
 };
 
-typedef struct st_player_data st_player_data;
-struct st_player_data {
-  char address[BUF_SIZE];
-  int health;
-  int cell;
-};
-
-typedef struct st_objects st_objects;
-struct st_objects {
+typedef struct st_assets st_assets;
+struct st_assets {
   int documents;
   int rings;
   int swords;
   int seeds;
+};
 
-  int pos;
+typedef struct st_player_data st_player_data;
+struct st_player_data {
+  char address[BUF_SIZE];
+  st_assets inventory;
+  int health;
+  int cell;
 };
 
 /** \page code enumerated map objects

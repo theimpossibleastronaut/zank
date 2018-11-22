@@ -27,7 +27,7 @@
 #include "Zank.h"
 
 bool accuse (st_player_data *player);
-void showitems (st_objects * object);
+void showitems (st_player_data *player);
 void showMap (st_player_data *player);
 void prompt (st_player_data *player, short pCtr, short iCtr);
 bool borderPatrol (st_player_data *player);
