@@ -44,10 +44,10 @@
 #endif
 
 #define DEBUG curses
-/**
- *  Define the grid size
- */
 
+/**
+ *  Define the map size
+ */
 #ifndef X
   #define X 10
 #endif
@@ -118,7 +118,7 @@ struct st_objects {
 */
 enum
 {
-  Tree,
+  TREE,
   Lake,
   Clearing,
   politician,

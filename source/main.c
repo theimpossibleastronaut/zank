@@ -1,3 +1,5 @@
+/** \file main.c
+ */
 /*
  * main.c
  *
@@ -33,13 +35,10 @@
 st_map map;
 
 st_direction direction[] = {
-  {"West", -1}
-  ,
-  {"East", 1}
-  ,
-  {"North", -Y}
-  ,
-  {"South", Y}
+  {"West", -1},
+  {"East", 1},
+  {"North", -Y},
+  {"South", Y }
 };
 
 /*
@@ -113,7 +112,7 @@ main (int argc, char *const *argv)
     run_server ();
   }
 
-  /** \page code Map Objects stringified
+    /** \page code Map Objects stringified
    * The order of the objects in string form
    * here must match with the object listed in the
    * enum declaration in Zank.h \ref map_objects
@@ -134,7 +133,7 @@ main (int argc, char *const *argv)
     "a grapevine"
   };
 
-  creature creatures[] = {
+  st_creature creatures[] = {
 
     {"an evil gorilla", 6},
     {"a deranged vulture", 5},
@@ -483,7 +482,7 @@ main (int argc, char *const *argv)
         }
         break;
 
-      case Tree:
+      case TREE:
         tree ();
         if (t == 1)
         {

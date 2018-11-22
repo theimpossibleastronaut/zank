@@ -1,3 +1,5 @@
+/** \file main.h
+ */
 /*
  * main.h
  *
@@ -26,11 +28,12 @@
 
 #include "Zank.h"
 
+/** Used to determine the number of elements in an array */
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
-typedef struct creature creature;
+typedef struct st_creature st_creature;
 
-struct creature
+struct st_creature
 {
   const char *name;
   const int strength;
