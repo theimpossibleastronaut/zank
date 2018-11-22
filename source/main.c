@@ -31,6 +31,8 @@
 #include "usage.h"
 #include "net.h"
 #include "graphics.h"
+#include "player.h"
+#include "military.h"
 
 st_map map;
 
@@ -130,7 +132,9 @@ main (int argc, char *const *argv)
     "a Magic Waterfall",
     "a dried up waterfall",
     "a magic seed",
-    "a grapevine"
+    "a grapevine",
+    "a diamond mine",
+    "a barracks"
   };
 
   st_creature creatures[] = {
@@ -206,6 +210,11 @@ main (int argc, char *const *argv)
   player.inventory.rings = 0;
   player.inventory.seeds = 0;
   player.inventory.swords = 0;
+  player.inventory.diamond_mine = 1;
+  player.inventory.diamonds = 0;
+  player.inventory.barracks = 0;
+  player.army.pawn.attribute.count = 0;
+  player.army.knight.attribute.count = 0;
 
   int ctr;
   int object_num;
@@ -301,6 +310,11 @@ main (int argc, char *const *argv)
         flag = borderPatrol (&player);
       break;
 
+    case 'c':
+      construct_barracks (&player);
+      flag = 1;
+      break;
+
     case 'i':
       showitems (&player);
       flag = 1;
@@ -333,7 +347,13 @@ main (int argc, char *const *argv)
 
       int object_num = map.cell[player.cell].object[0];
 
-      printw ("\nYou see %s\n", mapObject[object_num]);
+      int object_ctr = 0;
+      for (object_ctr = 0; object_ctr < MAX_CELL_OBJECTS; object_ctr++)
+      {
+        int object_num = map.cell[player.cell].object[object_ctr];
+        if (object_num != 0)
+          printw ("\nYou see %s\n", mapObject[object_num]);
+      }
 
       bool acquire = 0;
       switch (object_num)

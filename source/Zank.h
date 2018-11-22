@@ -34,8 +34,6 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-#include "military.h"
-
 /* On linux and mac, only <ncurses.h> is needed, but when using */
 /* MinGW on Windows, the header can't be found unless this */
 /* path is used */
@@ -63,7 +61,7 @@
  */
 #define MAP_SIZE (X * Y)
 
-#define BUF_SIZE 512 + 1
+#define BUF_SIZE (512 + 1)
 #define MAX_CELL_OBJECTS 4
 
 #define PACKAGE "Zank"
@@ -97,21 +95,8 @@ struct st_direction {
 };
 
 typedef struct st_assets st_assets;
-struct st_assets {
-  int documents;
-  int rings;
-  int swords;
-  int seeds;
-};
-
 typedef struct st_player_data st_player_data;
-struct st_player_data {
-  char address[BUF_SIZE];
-  st_assets inventory;
-  st_army army;
-  int health;
-  int cell;
-};
+typedef struct st_army st_army;
 
 /** \page code enumerated map objects
  * \section map_objects Map Objects
@@ -132,7 +117,9 @@ enum
   MagicWaterfall,
   Dried_up_Waterfall,
   Seed,
-  Grapevine
+  Grapevine,
+  DIAMOND_MINE,
+  BARRACKS
 };
 
 #endif

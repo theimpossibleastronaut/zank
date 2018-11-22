@@ -26,6 +26,8 @@
 
 #include "Zank.h"
 
+#define DIAMONDS_PER_TURN 25
+
 bool accuse (st_player_data *player);
 void showitems (st_player_data *player);
 void showMap (st_player_data *player);

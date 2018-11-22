@@ -25,6 +25,7 @@
 
 #include <unistd.h>
 #include "functions.h"
+#include "player.h"
 #include "utils.h"
 
 bool
@@ -71,21 +72,26 @@ accuse (st_player_data *player)
 void
 showitems (st_player_data *player)
 {
-
   printw ("Your inventory:\n");
-  if (player->inventory.swords || player->inventory.documents || player->inventory.rings || player->inventory.seeds)
-  {
-    printw ("Swords: %d\n", player->inventory.swords);
-    printw ("Incriminating Documents: %d\n", player->inventory.documents);
-    printw ("Magic Rings: %d\n", player->inventory.rings);
-    printw ("Seeds: %d\n", player->inventory.seeds);
-  }
 
-  else
-    printw ("You're not carrying anything");
+  printw ("Swords: %d\n", player->inventory.swords);
+  printw ("Incriminating Documents: %d\n", player->inventory.documents);
+  printw ("Magic Rings: %d\n", player->inventory.rings);
+  printw ("Seeds: %d\n", player->inventory.seeds);
+
+  printw ("\n");
+  printw (" = Financial Portfolio =\n");
+  printw ("Diamond Mines: %d\n", player->inventory.diamond_mine);
+  printw ("Diamonds: %d\n", player->inventory.diamonds);
 
   printw ("\n");
 
+  printw (" = Military =\n");
+  printw ("Barracks: %d\n", player->inventory.barracks);
+  printw ("Pawns: %d\n", player->army.pawn.attribute.count);
+  printw ("Knights: %d\n", player->army.knight.attribute.count);
+
+  printw ("\n");
 }
 
 void
@@ -148,6 +154,10 @@ void change_pos(st_player_data *player, const char c, int which)
   extern const int sfd;
   extern const bool is_client;
   player->cell = player->cell + direction[which].offset;
+
+  player->inventory.diamonds += (DIAMONDS_PER_TURN * player->inventory.diamond_mine);
+  player->army.pawn.attribute.count += (PAWNS_PER_TURN * player->inventory.barracks);
+  player->army.knight.attribute.count += (KNIGHTS_PER_TURN * player->inventory.barracks);
 
   if (is_client)
   {

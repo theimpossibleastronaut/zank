@@ -6,7 +6,7 @@ SET(BIN_OUTPUT ${ProjectName})
 set(CMAKE_C_FLAGS "-Wall")
 set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 add_executable (${BIN_OUTPUT} main.c functions.c usage.c net.c utils.c
-								graphics.c)
+								graphics.c military.c)
 
 message(STATUS "Searching for curses")
 include(FindCurses)

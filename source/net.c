@@ -8,6 +8,7 @@
 
 #include "Zank.h"
 #include "utils.h"
+#include "player.h"
 
 #define CLIENTS_MAX 10
 
