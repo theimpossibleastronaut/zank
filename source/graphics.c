@@ -21,19 +21,21 @@ tree (void)
   init_pair (1, COLOR_GREEN, COLOR_BLACK);
   init_pair (2, COLOR_MAGENTA, COLOR_BLACK);
   attron (COLOR_PAIR (1));
-  printw ("  oOOOOo\n");
-  printw (" oOOOOOOo\n");
-  printw ("oOOOOOOOOo\n");
-  printw (" oOOOOOOo\n");
-  printw ("  OOOOo\n");
-  attroff (COLOR_PAIR (1));
-  attron (COLOR_PAIR (2));
-  printw ("    II\n");
-  printw ("    II\n");
-  printw ("    II\n");
-  printw ("    II\n");
-  printw ("    II\n");
-  printw ("   /xx\\\n");
+  printw ("\
+  oOOOOo\n\
+ oOOOOOOo\n\
+oOOOOOOOOo\n\
+ oOOOOOOo\n\
+  OOOOOo\n");
+attroff (COLOR_PAIR (1));
+attron (COLOR_PAIR (2));
+  printw ("\
+    II\n\
+    II\n\
+    II\n\
+    II\n\
+    II\n\
+   /xx\\\n");
   attroff (COLOR_PAIR (2));
 }
 
@@ -44,18 +46,19 @@ wall (void)
   start_color ();
   init_pair (1, COLOR_RED, COLOR_WHITE);
   attron (COLOR_PAIR (1));
-  printw ("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-  printw ("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-  printw ("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-  printw ("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-  printw ("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-  printw ("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-  printw ("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-  printw ("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-  printw ("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-  printw ("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
-  printw ("HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n");
-  printw ("EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
+  printw ("\
+HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n\
+EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n\
+HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n\
+EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n\
+HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n\
+EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n\
+HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n\
+EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n\
+HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n\
+EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n\
+HEEHEEHEEHEEHEEHEEHEEHEEHEEHEEHE\n\
+EHHEHHEHHEHHEHHEHHEHHEHHEHHEHHEH\n");
   attroff (COLOR_PAIR (1));
   printw ("\n");
 }
@@ -66,16 +69,17 @@ lake (void)
   start_color ();
   init_pair (1, COLOR_WHITE, COLOR_BLUE);
   attron (COLOR_PAIR (1));
-  printw ("            \n");
-  printw ("              \n");
-  printw ("                  \n");
-  printw ("                    \n");
-  printw ("                     \n");
-  printw ("                    \n");
-  printw ("                  \n");
-  printw ("                \n");
-  printw ("             \n");
-  printw ("          \n");
+  printw ("\
+            \n\
+              \n\
+                  \n\
+                    \n\
+                     \n\
+                    \n\
+                  \n\
+                \n\
+             \n\
+          \n");
   attroff (COLOR_PAIR (1));
   printw ("\n");
 }
