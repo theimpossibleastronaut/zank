@@ -10,7 +10,7 @@ struct st_assets {
   int swords;
   int seeds;
   int diamond_mine;
-  int diamonds;
+  float diamonds;
   int barracks;
 };
 

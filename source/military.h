@@ -5,6 +5,11 @@
 
 #include "Zank.h"
 
+#define BARRACKS_COST 250
+#define GET_UNITS_COST 100
+
+#define INTEREST .1
+
 #define PAWN_STRENGTH 20
 #define PAWN_ARMOR 10
 #define PAWNS_PER_TURN 4
@@ -36,5 +41,7 @@ struct st_army {
 };
 
 void construct_barracks (st_player_data *player);
+
+void train_units (st_player_data *player);
 
 #endif

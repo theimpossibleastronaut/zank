@@ -82,7 +82,7 @@ showitems (st_player_data *player)
   printw ("\n");
   printw (" = Financial Portfolio =\n");
   printw ("Diamond Mines: %d\n", player->inventory.diamond_mine);
-  printw ("Diamonds: %d\n", player->inventory.diamonds);
+  printw ("Diamonds: %.2f\n", player->inventory.diamonds);
 
   printw ("\n");
 
@@ -135,7 +135,7 @@ prompt (st_player_data *player, short pCtr, short iCtr)
 {
   extern st_map map;
   mvprintw (22, 0,
-            "\n(%d,%d) (politicians left to retire: %d) (HP: %d) (h,i,q[uit]) (e,w,n,s)? ",
+            "\n(%d,%d) (politicians left to retire: %d) (HP: %d) (h,i,c,g,q[uit]) (e,w,n,s)? ",
             map.cell[player->cell].pos_y, map.cell[player->cell].pos_x, pCtr - iCtr, player->health);
 }
 
@@ -156,8 +156,7 @@ void change_pos(st_player_data *player, const char c, int which)
   player->cell = player->cell + direction[which].offset;
 
   player->inventory.diamonds += (DIAMONDS_PER_TURN * player->inventory.diamond_mine);
-  player->army.pawn.attribute.count += (PAWNS_PER_TURN * player->inventory.barracks);
-  player->army.knight.attribute.count += (KNIGHTS_PER_TURN * player->inventory.barracks);
+  player->inventory.diamonds += player->inventory.diamonds * INTEREST;
 
   if (is_client)
   {

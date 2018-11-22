@@ -315,6 +315,11 @@ main (int argc, char *const *argv)
       flag = 1;
       break;
 
+    case 'g':
+      train_units (&player);
+      flag = 1;
+      break;
+
     case 'i':
       showitems (&player);
       flag = 1;
@@ -327,6 +332,8 @@ main (int argc, char *const *argv)
       printw ("\t\t(Or use the left/right/up/down cursor keys\n");
       printw ("\ti = show inventory\n");
       printw ("\tq = quit game\n");
+      printw ("\tc = construct barracks\n");
+      printw ("\tg = get units\n");
 
       flag = 1;
       break;
@@ -343,6 +350,7 @@ main (int argc, char *const *argv)
 
     if (!flag)
     {
+      printw ("Diamonds: %.2f\n\n", player.inventory.diamonds);
       map.cell[player.cell].is_explored = 1;
 
       int object_num = map.cell[player.cell].object[0];
