@@ -34,6 +34,8 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+#include "military.h"
+
 /* On linux and mac, only <ncurses.h> is needed, but when using */
 /* MinGW on Windows, the header can't be found unless this */
 /* path is used */
@@ -106,6 +108,7 @@ typedef struct st_player_data st_player_data;
 struct st_player_data {
   char address[BUF_SIZE];
   st_assets inventory;
+  st_army army;
   int health;
   int cell;
 };
