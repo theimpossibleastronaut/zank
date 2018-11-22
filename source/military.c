@@ -9,6 +9,10 @@ st_knight knight = { KNIGHT_STRENGTH, KNIGHT_ARMOR };
 
 extern st_map map;
 
+/** Determine if a barracks is present in the current cell
+ * @param [in] player
+ * @return true or false
+ */
 static bool barracks_here (st_player_data *player)
 {
   int i;

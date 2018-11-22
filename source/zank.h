@@ -1,6 +1,7 @@
+/** \file zank.h
+ * Globals for zank
+ */
 /*
- * Zank.h
- *
  * Copyright 2012-2018 Andy Alt <andy400-dev@yahoo.com>
  *
  * https://github.com/theimpossibleastronaut/Zank/wiki
@@ -68,11 +69,18 @@
 #define VERSION "0.0.6-dev"
 #define AUTHOR "Andy Alt"
 
+/** Defines a single cell on a map. This structure is not used by itself, but
+ * as a member of /ref st_map */
 typedef struct st_cell st_cell;
 struct st_cell {
+  /** The 'x' coordinate of the cell */
   int pos_x;
+  /** The 'y' coordinate of the cell */
   int pos_y;
+  /** The \ref map_objects occupying the cell */
   int object[MAX_CELL_OBJECTS];
+
+  /** Whether or not the cell has been explored */
   bool is_explored;
 };
 

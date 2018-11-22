@@ -1,6 +1,6 @@
+/** \file usage.c
+ */
 /*
- * usage.c
- *
  * Copyright 2018 Andy Alt<andy400-dev@yahoo.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 
 
 #include <stdio.h>
-#include "Zank.h"
+#include "zank.h"
 #include "usage.h"
 
 void display_version (void)

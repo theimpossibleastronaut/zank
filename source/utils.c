@@ -1,3 +1,5 @@
+/** \file utils.c
+ */
 #include <string.h>
 
  /* reverse:  reverse string s in place */

@@ -1,3 +1,5 @@
+/** \file net.c
+ */
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -6,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Zank.h"
+#include "zank.h"
 #include "utils.h"
 #include "player.h"
 

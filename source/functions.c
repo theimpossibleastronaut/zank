@@ -1,3 +1,5 @@
+/** \file functions.c
+ */
 /*
  * functions.c
  *

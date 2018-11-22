@@ -1,8 +1,6 @@
 /** \file main.h
  */
 /*
- * main.h
- *
  * Copyright 2012-2018 Andy Alt <andyqwerty@users.sourceforge.net>
  *
  * https://github.com/theimpossibleastronaut/Zank/wiki
@@ -26,7 +24,7 @@
  */
 
 
-#include "Zank.h"
+#include "zank.h"
 
 /** Used to determine the number of elements in an array */
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))

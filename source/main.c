@@ -1,8 +1,6 @@
 /** \file main.c
  */
 /*
- * main.c
- *
  * Copyright 2012-2018 Andy Alt <andy400-dev@yahoo.com>
  *
  * https://github.com/theimpossibleastronaut/Zank/wiki
@@ -114,7 +112,8 @@ main (int argc, char *const *argv)
     run_server ();
   }
 
-    /** \page code Map Objects stringified
+  /** \page code Detailed Code Information
+   * \section map_objects Map Objects
    * The order of the objects in string form
    * here must match with the object listed in the
    * enum declaration in Zank.h \ref map_objects
@@ -174,12 +173,13 @@ main (int argc, char *const *argv)
 
   int randgrape;
 
-/** \page code Magic Waterfall
+/**
  * A number between 0 and 100 is generated to determine the position of
  * the magic waterfall, and then the cell is assigned the value corresponding
  * to the magic waterfall.
  */
   int waterfall_pos = rand () % MAP_SIZE;
+
   map.cell[waterfall_pos].object[0] = MagicWaterfall;
 
 /** \page code How politicians are placed
