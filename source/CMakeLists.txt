@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
-SET(ProjectName Zank)
+SET(ProjectName zank)
 
 SET(BIN_OUTPUT ${ProjectName})
 set(CMAKE_C_FLAGS "-Wall")

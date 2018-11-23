@@ -1,18 +1,18 @@
-# Zank
+# zank
 
 Text-based adventure game; can you find enough magic rings and
 incriminating documents to indict and retire all the politicians before
 your HP runs out?
 
-Zank home page:<https://github.com/theimpossibleastronaut/Zank/wiki>
+zank home page:<https://github.com/theimpossibleastronaut/zank/wiki>
 
-screenshots:<https://github.com/theimpossibleastronaut/Zank/tree/master/screenshots>
+screenshots:<https://github.com/theimpossibleastronaut/zank/tree/master/screenshots>
 
 ## Dependencies:
 
   * gcc
   * cmake
-  * ncurses-dev
+  * libncurses-dev
 
 ## Compiling
 
@@ -30,9 +30,12 @@ screenshots:<https://github.com/theimpossibleastronaut/Zank/tree/master/screensh
     cmake -G "MinGW Makefiles" ..\source
     mingw32-make
 
-The Zank executable will be output to your build directory.
+The zank executable will be output to your build directory. To run, use
 
-'make install' is not working yet.
+    ./zank
+
+zank doesn't have need to be installed because it can be run as a
+stand-alone binary. At present, all the data is built into the program.
 
 e,w,n,s or cursor keys = direction keys
 h = display in-game help
@@ -40,10 +43,7 @@ i = show inventory
 m = display map
 q = quit
 
-When you are at position 0,0, you are at the bottom-left corner of the map.
-When you are at position 9,9, you are in the top-right corner.
-
-Inspiration for Zank came from BBS Door games such as Zork, Legend of
+Inspiration for zank came from BBS Door games such as Zork, Legend of
 the Red Dragon (L.O.R.D.), and Lunatix.
 
 License: GNU GPL 3.0
@@ -51,4 +51,4 @@ License: GNU GPL 3.0
 Join the chat at https://matrix.to/#/!fxFvxhBDUCswKqaLYb:matrix.org
 
 
-This file last updated 2018-11-10
+This file last updated 2018-11-23
