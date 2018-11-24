@@ -31,6 +31,9 @@
 #include "graphics.h"
 #include "player.h"
 #include "military.h"
+#include "utils.h"
+
+char guid[GID_LEN];
 
 st_map map;
 
@@ -98,6 +101,9 @@ main (int argc, char *const *argv)
     exit (1);
   }
 
+  srand (time (NULL));
+  generate_guid (guid);
+
   st_player_data player;
 
   player.health = 100;
@@ -108,6 +114,7 @@ main (int argc, char *const *argv)
 
   if (is_server)
   {
+
     init_map_cell_positions ();
     run_server ();
   }
@@ -168,8 +175,6 @@ main (int argc, char *const *argv)
   int creature_count = ARRAY_SIZE (creatures);
 
   int which_creature;
-
-  srand (time (NULL));
 
   int randgrape;
 

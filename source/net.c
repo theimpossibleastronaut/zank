@@ -23,6 +23,13 @@
 void
 run_server (void)
 {
+  extern char *guid;
+  /* FIXME: According to gdb, there isn't anything wrong with this string.
+   * Why doesn't it print??? I also tried it before the call to run_server()
+   * and it still doesn't print!
+   */
+  printf ("game_id: %s", guid);
+
   struct addrinfo hints;
   struct addrinfo *result, *rp;
   int sfd, s;
