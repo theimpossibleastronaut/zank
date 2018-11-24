@@ -68,10 +68,14 @@ del_char_shift_left (const char c, char **str)
 void
 generate_guid (char *guid)
 {
+  /* The key will be the address of guid, to help with the "randomness"
+   */
   char guid_key[BUF_SIZE];
   snprintf  (guid_key, BUF_SIZE, "%p",
             (void*)&guid);
 
+  /* Initially, just fill the 32 byte string with some random characters
+   */
   int guid_pos = 0;
   while (guid_pos < GUID_LEN - 1)
   {
@@ -87,24 +91,42 @@ generate_guid (char *guid)
 
   int guid_key_pos = 0;
 
+  /* This generator is loosely based on the Vigenère cipher, so the modulus
+   * operator is used. The value is based on the numeric difference between
+   * '0' and 'z' on the ASCII table. According to that cipher, The value
+   * after the % operator should be the range of characters that are being used.
+   */
   int mod_num = 'z' - '0';
+
   int offset = '0';
+
   int upper_boundary = 'z' - offset;
   while (guid_key[guid_key_pos] != '\0')
   {
     guid_pos = 0;
     while (guid[guid_pos] != '\0')
     {
+      /* To make the math a bit easier, all ascii values will be
+       * relative to 0.
+       */
       char guid_char = guid[guid_pos] - offset;
       char guid_key_char = guid_key[guid_key_pos] - offset;
+
       int cipher_char = (guid_char + guid_key_char) % mod_num;
 
+      /* Wrap-around if the new character would ultimately be > 'z'
+       */
       char new_char = cipher_char + guid_char > upper_boundary ?
         (cipher_char + guid_char) - upper_boundary : cipher_char;
 
+      /* Skip punctuation, just change to to a character between a & z
+       */
       if (new_char < 'a' - offset && new_char > '9' - offset)
         new_char = ((rand() % ('z' - 'a')) + 'a') - offset;
 
+      /* Now that we have a final character, add offset to make the char
+       * as it should be
+       */
       int final_char = new_char + offset;
 
       guid[guid_pos] = final_char;
