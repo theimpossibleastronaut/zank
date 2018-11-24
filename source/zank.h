@@ -107,7 +107,8 @@ typedef struct st_player_data st_player_data;
 typedef struct st_army st_army;
 
 /** \page code enumerated map objects
- * \section map_objects Map Objects
+* \section map_objects Map Objects
+*
 * The order of each object must match with the objects listed in the
 * mapObjects[] declaration in main.c
 */

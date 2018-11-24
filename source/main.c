@@ -37,6 +37,9 @@ char guid[GID_LEN];
 
 st_map map;
 
+/** The strings are printed on the screen after the player moves in that
+ * direction. This is primarily used by \ref change_pos()
+ */
 st_direction direction[] = {
   {"West", -1},
   {"East", 1},
@@ -101,14 +104,19 @@ main (int argc, char *const *argv)
     exit (1);
   }
 
+  /** The random number generator is seeded with the value returned
+   * by time(), in this case, the number of seconds since 1970.
+   */
   srand (time (NULL));
+
   generate_guid (guid);
 
   st_player_data player;
 
   player.health = 100;
+
 /**
- * Starting position
+ * A player is assigned a starting position.
  */
   player.cell = MAP_SIZE / 2;
 

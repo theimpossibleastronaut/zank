@@ -150,6 +150,14 @@ borderPatrol (st_player_data *player)
   return 1;
 }
 
+/** Run when a player selects a direction key. This function uses the
+ * \ref direction struct and it's corresponding enum field in \ref zank.h to determine
+ * the location of the player's cell.
+ * @param[in,out] player
+ * @param[in] c
+ * @param[in] which
+ * @return void
+ */
 void change_pos(st_player_data *player, const char c, int which)
 {
   extern const st_direction direction[];
