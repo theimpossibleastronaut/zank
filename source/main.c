@@ -33,7 +33,7 @@
 #include "military.h"
 #include "utils.h"
 
-char guid[GID_LEN];
+char guid[GUID_LEN];
 
 st_map map;
 

@@ -62,9 +62,6 @@ del_char_shift_left (const char c, char **str)
  * of guid as the key to "encrypt" a randomly generated string. This
  * prevents the likelihood that 2 guids would ever be the same.
  *
- * FIXME:
- * It should be noted that this function, though it works, is horribly written
- * due to Andy's inexperience with cryptography and math.
  * @param[in,out] guid
  * @return void
  */
@@ -76,7 +73,7 @@ generate_guid (char *guid)
             (void*)&guid);
 
   int guid_pos = 0;
-  while (guid_pos < GID_LEN - 1)
+  while (guid_pos < GUID_LEN - 1)
   {
     int tmp_char = 0;
     do
@@ -90,28 +87,31 @@ generate_guid (char *guid)
 
   int guid_key_pos = 0;
 
+  int mod_num = 'z' - '0';
+  int offset = '0';
+  int upper_boundary = 'z' - offset;
   while (guid_key[guid_key_pos] != '\0')
   {
     guid_pos = 0;
     while (guid[guid_pos] != '\0')
     {
-      do
-      {
-        unsigned int offset = guid_key[guid_key_pos] - ('0' - 1);
-        if (offset > 'z' - '0' - 1)
-          offset = rand () % guid_key[guid_key_pos];
+      char guid_char = guid[guid_pos] - offset;
+      char guid_key_char = guid_key[guid_key_pos] - offset;
+      int cipher_char = (guid_char + guid_key_char) % mod_num;
 
-        guid[guid_pos] += offset;
+      char new_char = cipher_char + guid_char > upper_boundary ?
+        (cipher_char + guid_char) - upper_boundary : cipher_char;
 
-        if (guid[guid_pos] > 'z')
-        {
-          guid[guid_pos] -= offset;
-        }
-      } while (! isalnum (guid[guid_pos]));
+      if (new_char < 'a' - offset && new_char > '9' - offset)
+        new_char = ((rand() % ('z' - 'a')) + 'a') - offset;
+
+      int final_char = new_char + offset;
+
+      guid[guid_pos] = final_char;
+
       guid_pos++;
     }
     guid_key_pos++;
   }
-
   printf ("game_id = %s\n", guid);
 }
