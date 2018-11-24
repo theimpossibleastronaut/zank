@@ -3,8 +3,7 @@ cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 SET(ProjectName zank)
 
 SET(BIN_OUTPUT ${ProjectName})
-set(CMAKE_C_FLAGS "-Wall")
-set(CMAKE_BUILD_TYPE "RelWithDebInfo")
+set(CMAKE_C_FLAGS "-Wall -g -O0")
 add_executable (${BIN_OUTPUT} main.c functions.c usage.c net.c utils.c
 								graphics.c military.c)
 
