@@ -34,6 +34,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <json.h>
 
 /* On linux and mac, only <ncurses.h> is needed, but when using */
 /* MinGW on Windows, the header can't be found unless this */

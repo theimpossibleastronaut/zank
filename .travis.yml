@@ -41,6 +41,11 @@ before_install:
   - if [ "$Tr_Compiler_Version" != "" ] && [ "$Tr_Compiler_Version" != "default" ] && [ "$CC" == "clang" ]; then export CXX="clang++-${Tr_Compiler_Version}" CC="clang-${Tr_Compiler_Version}"; fi
 
 script:
+  - cd external/json-c
+  - ./autogen.sh
+  - ./configure --prefix=$PWD/local
+  - make && make install
+  - cd ../..
   - mkdir build
   - cd build
   - cmake ../source
