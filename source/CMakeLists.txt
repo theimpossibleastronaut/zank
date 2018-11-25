@@ -18,4 +18,4 @@ ENDIF()
 
 include_directories("${CMAKE_SOURCE_DIR}/../external/json-c/local/include/json-c")
 
-target_link_libraries (${BIN_OUTPUT} ${EXTERNAL_LIBS} -L${CMAKE_SOURCE_DIR}/../external/json-c/local/lib/ -ljson-c)
+target_link_libraries (${BIN_OUTPUT} ${EXTERNAL_LIBS} ${CMAKE_SOURCE_DIR}/../external/json-c/local/lib/libjson-c.a)
