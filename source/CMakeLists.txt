@@ -13,7 +13,7 @@ IF (CURSES_FOUND)
   SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${CURSES_LIBRARIES})
   SET(INCLUDE_DIRECTORIES ${INCLUDE_DIRECTORIES} ${CURSES_INCLUDE_DIRS})
 ELSE()
-  message (FATAL "curses library not found")
+  message (FATAL_ERROR "curses library not found")
 ENDIF()
 
 target_link_libraries (${BIN_OUTPUT} ${EXTERNAL_LIBS})
