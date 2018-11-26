@@ -1,0 +1,20 @@
+{
+  "name": "diamond mine",
+  "cost": 1000,
+  "is_destructible": true,
+  "armor": 150
+}
+{
+  "name": "barracks",
+  "cost": 250,
+  "is_destructible": true,
+  "armor": 300
+}
+{
+  "name": "defense tower",
+  "cost": 300,
+  "is_destructible": true,
+  "armor": 400
+}
+
+
