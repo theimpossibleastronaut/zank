@@ -62,7 +62,4 @@ the Red Dragon (L.O.R.D.), and Lunatix.
 
 License: GNU GPL 3.0
 
-Join the chat at https://matrix.to/#/!fxFvxhBDUCswKqaLYb:matrix.org
-
-
 This file last updated 2018-11-23
