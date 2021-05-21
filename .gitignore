@@ -3,9 +3,3 @@ Zank
 Zank.exe
 /Zank.geany
 *~
-
-# Doxygen-related
-# These are generated automatically and don't need to be added
-# right now.
-/docs
-doxy-warn.log
