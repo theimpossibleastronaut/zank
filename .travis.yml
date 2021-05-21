@@ -109,7 +109,8 @@ before_install:
       fi;
       sudo apt-get install -y libjson-c-dev;
     else
-      brew install ncurses json-c;
+      brew install ncurses;
+      PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig;
     fi
 
 script:
