@@ -24,10 +24,10 @@ typedef struct st_attributes st_attributes;
 struct st_attributes {
 
   /** Strength */
-  const float strength;
+  float strength;
 
   /** Armor */
-  const float armor;
+  float armor;
 
   /** Number of each unit from the \ref st_army struct that the player has */
   int count;
@@ -37,7 +37,6 @@ struct st_attributes {
 typedef struct st_pawn st_pawn;
 struct st_pawn {
 
-  /** The information from \ref st_attributes */
   st_attributes attribute;
 };
 

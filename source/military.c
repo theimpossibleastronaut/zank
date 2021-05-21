@@ -4,9 +4,6 @@
 #include "military.h"
 #include "player.h"
 
-st_pawn pawn = {PAWN_STRENGTH, PAWN_ARMOR};
-st_knight knight = { KNIGHT_STRENGTH, KNIGHT_ARMOR };
-
 extern st_map map;
 
 /** Determine if a barracks is present in the current cell

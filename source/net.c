@@ -132,7 +132,7 @@ run_server (void)
               fprintf (stderr, "Error allocating memory.\n");
               exit (EXIT_FAILURE);
             }
-            snprintf (clients[cl_num]->address, BUF_SIZE, "%s", host);
+            snprintf (clients[cl_num]->address, NI_MAXHOST, "%s", host);
             break;
           }
           cl_num++;

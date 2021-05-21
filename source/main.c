@@ -115,6 +115,16 @@ main (int argc, char *const *argv)
 
   player.health = 100;
 
+#ifdef TEST_TRUE
+  st_pawn pawn;
+  pawn.attribute.strength = PAWN_STRENGTH;
+  pawn.attribute.armor = PAWN_ARMOR;
+
+  st_knight knight;
+  knight.attribute.strength = KNIGHT_STRENGTH;
+  knight.attribute.armor = KNIGHT_ARMOR;
+#endif
+
 /**
  * A player is assigned a starting position.
  */
