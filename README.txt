@@ -13,20 +13,7 @@ screenshots:<https://github.com/theimpossibleastronaut/zank/tree/master/screensh
   * gcc
   * cmake
   * libncurses-dev
-  * libjson-c <https://github.com/json-c/json-c>
-
-zank will try to link against a local copy of libjson-c, which you can
-get by cloning it as a submodule. While inside the zank repo:
-
-    git submodule update --init --recursive
-
-Then to build json-c:
-
-    cd external/json-c
-    ./autogen.sh
-    ./configure --prefix=$PWD/local
-    make
-    make install
+  * libjson-c-dev
 
 ## Compiling
 

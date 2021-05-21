@@ -1,51 +1,118 @@
 language: c
-
-sudo: required
-
+cache: ccache
 matrix:
+# gcc
   include:
+    - name: "gcc 5"
+      os: linux
+      dist: xenial
+      compiler: gcc # defaults to version 5 on xenial
     - os: linux
+      dist: bionic
       compiler: gcc
-      env: Tr_Compiler_Version="default"
-    - os: linux
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+    - name: "gcc 7"
+      os: linux
+      dist: bionic
       compiler: gcc
-      env: Tr_Compiler_Version="5"
     - os: linux
+      dist: bionic
       compiler: gcc
-      env: Tr_Compiler_Version="6"
+      env:
+        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
     - os: linux
+      dist: bionic
       compiler: gcc
-      env: Tr_Compiler_Version="7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-9
+      env:
+        - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
     - os: linux
+      dist: bionic
       compiler: gcc
-      env: Tr_Compiler_Version="8"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-10
+      env:
+        - MATRIX_EVAL="CC=gcc-10 && CXX=g++-10"
     - os: linux
+      dist: bionic
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-11
+      env:
+        - MATRIX_EVAL="CC=gcc-11 && CXX=g++-11"
+    - name: "gcc 9"
+      os: linux
+      dist: focal
+      compiler: gcc
+
 # clang
-      compiler: clang
-      env: Tr_Compiler_Version="default"
     - os: linux
+      dist: xenial
       compiler: clang
-      env: Tr_Compiler_Version="6.0"
-# osx
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-5.0
+          packages:
+            - clang-5.0
+      env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+    - os: linux
+      dist: xenial
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-6.0
+          packages:
+            - clang-6.0
+      env:
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+    - name: "clang 7"
+      os: linux
+      dist: xenial
+      compiler: clang
+
     - os: osx
-      osx_image: xcode9.2
+      osx_image: xcode10.3
+      env: XCODE="true"
     - os: osx
-      osx_image: xcode9.3beta
+      osx_image: xcode11.6
+      env:
+        - XCODE="true"
+    - os: osx
+      osx_image: xcode12.2
+      env: XCODE="true"
 
 #  allow_failures:
-#  - os: osx
+#    - os: osx
 
 before_install:
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./.travis-before_install.sh "$CC" "$Tr_Compiler_Version"; fi
-  - if [ "$Tr_Compiler_Version" != "" ] && [ "$Tr_Compiler_Version" != "default" ] && [ "$CC" = "gcc" ]; then export CXX="g++-${Tr_Compiler_Version}" CC="gcc-${Tr_Compiler_Version}"; fi
-  - if [ "$Tr_Compiler_Version" != "" ] && [ "$Tr_Compiler_Version" != "default" ] && [ "$CC" == "clang" ]; then export CXX="clang++-${Tr_Compiler_Version}" CC="clang-${Tr_Compiler_Version}"; fi
+  - echo $CC
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+      eval "${MATRIX_EVAL}";
+      if [ -n "$MATRIX_EVAL" ] && [ "$TRAVIS_COMPILER" != "clang" ] && [ "$CC" != "gcc-9" ] && [ "$CC" != "gcc-10" ]; then
+        sudo apt-get install -y $CC;
+      fi;
+      apt-get install -y libjson-c-dev;
+    else
+      brew install ncurses json-c;
+    fi
 
 script:
-  - cd external/json-c
-  - ./autogen.sh
-  - ./configure --prefix=$PWD/local
-  - make && make install
-  - cd ../..
   - mkdir build
   - cd build
   - cmake ../source
